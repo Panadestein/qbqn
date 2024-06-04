@@ -20,8 +20,6 @@ following references [[https://arxiv.org/abs/1804.03719][arXiv:1804.03719]] and 
   }
 #+end_src
 
-compared with those from a real [[ibm_eagle/shor_factorize_fifteen.html][quantum computer]]. The complete source code is available in
-a GitHub [[https://github.com/Panadestein/bqun][repository]].
 
 #+name: generate-bqn-link
 #+begin_src emacs-lisp :noweb yes :noweb-prefix no :exports none :results raw

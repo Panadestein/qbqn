@@ -13,7 +13,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Emacs
-        run: sudo apt install emacs-nox --yes
+        run: sudo apt-add-repository ppa:ubuntu-elisp/ppa
+        run: sudo apt update
+        run: sudo apt-get install emacs-snapshot
 
       - name: Build the site
         run: ./publi.sh

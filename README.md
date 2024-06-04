@@ -1,4 +1,4 @@
-# QBQN
+# A quantum interpreter in BQN
 
 A minimal quantum interpreter written in [BQN](https://mlochbaum.github.io/BQN/), and tested with a circuit
 implementing the quantum subroutine of Shor's algorithm for the number 15.

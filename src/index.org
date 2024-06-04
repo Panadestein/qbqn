@@ -5,7 +5,7 @@
 We define a quantum interpreter based on references [[https://arxiv.org/abs/1711.02086][arXiv:1711.02086]] and [[https://arxiv.org/abs/1608.03355][arXiv:1608.03355]]:
 
 #+name: qbqn-block
-#+begin_src bqn :tangle yes :exports code
+#+begin_src bqn :exports code
   qbqn ← {psi⇐0}
 #+end_src
 
@@ -13,7 +13,7 @@ To test it, we employ the quantum circuit of Shor's algorithm for src_bqn[:expor
 following references [[https://arxiv.org/abs/1804.03719][arXiv:1804.03719]] and [[https://arxiv.org/abs/2306.09122][arXiv:2306.09122]]:
 
 #+name: shor-block
-#+begin_src bqn :tangle yes
+#+begin_src bqn
   shor ← {
     n⇐15
     a⇐11

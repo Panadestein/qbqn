@@ -63,7 +63,7 @@
 	     :publishing-directory "./public/assets"
 	     :publishing-function 'org-publish-attachment
 	     :recursive t)
-       (list "assets"
+       (list "ibm_eagle"
 	     :base-directory "./ibm_eagle"
 	     :publishing-directory "./public/ibm_eagle"
 	     :publishing-function 'org-publish-attachment

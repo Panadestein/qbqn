@@ -20,3 +20,11 @@ following references [[https://arxiv.org/abs/1804.03719][arXiv:1804.03719]] and 
   }
 #+end_src
 
+a GitHub [[https://github.com/Panadestein/bqun][repository]].
+
+#+name: generate-bqn-link
+#+begin_src emacs-lisp :noweb yes :noweb-prefix no :exports none :results raw
+  (let* ((bqn-code (concat "<<qbqn-block>>" "\n" "<<shor-block>>"))
+         (encoded (base64-encode-string (encode-coding-string bqn-code 'utf-8) t)))
+    (concat "[[https://mlochbaum.github.io/BQN/try.html#code=" encoded "][BQN repl]]"))
+#+end_src

@@ -72,7 +72,6 @@
 ;; Generate site
 
 (org-publish-all t)
-
 (message "Build completed")
 
 (provide 'build-site)

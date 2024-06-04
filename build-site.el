@@ -65,6 +65,7 @@
 	     :recursive t)
        (list "ibm_eagle"
 	     :base-directory "./ibm_eagle"
+	     :base-extension "html"
 	     :publishing-directory "./public/ibm_eagle"
 	     :publishing-function 'org-publish-attachment
 	     :recursive t)))

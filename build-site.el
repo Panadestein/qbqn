@@ -47,7 +47,7 @@
 
 (setq org-publish-project-alist
       (list
-       (list "spodat"
+       (list "qbqn"
 	     :recursive t
 	     :base-directory "./src"
 	     :publishing-directory "./public"
@@ -61,6 +61,11 @@
 	     :base-directory "./assets"
 	     :base-extension "css\\|ttf"
 	     :publishing-directory "./public/assets"
+	     :publishing-function 'org-publish-attachment
+	     :recursive t)
+       (list "assets"
+	     :base-directory "./ibm_eagle"
+	     :publishing-directory "./public/ibm_eagle"
 	     :publishing-function 'org-publish-attachment
 	     :recursive t)))
 

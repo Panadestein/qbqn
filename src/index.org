@@ -21,7 +21,7 @@ following references [[https://arxiv.org/abs/1804.03719][arXiv:1804.03719]] and 
 #+end_src
 
 The simulation can be run in the call_generate-bqn-link(), and the results can be
-compared with those from a real [[ibm_eagle/shor_factorize_fifteen.html][quantum computer]]. The complete source code is available in
+compared with those from a real [[./ibm_eagle/shor_factorize_fifteen.html][quantum computer]]. The complete source code is available in
 a GitHub [[https://github.com/Panadestein/bqun][repository]].
 
 #+name: generate-bqn-link

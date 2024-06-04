@@ -47,16 +47,6 @@
 
 (setq org-publish-project-alist
       (list
-       (list "qbqn"
-	     :recursive t
-	     :base-directory "./src"
-	     :publishing-directory "./public"
-	     :publishing-function 'org-html-publish-to-html
-	     :with-author nil
-	     :with-creator nil
-	     :with-toc nil
-	     :section-numbers nil
-	     :time-stamp-file nil)
        (list "assets"
 	     :base-directory "./assets"
 	     :base-extension "css\\|ttf"
@@ -68,7 +58,17 @@
 	     :base-extension "html"
 	     :publishing-directory "./public/ibm_eagle"
 	     :publishing-function 'org-publish-attachment
-	     :recursive t)))
+	     :recursive t)
+       (list "qbqn"
+	     :recursive t
+	     :base-directory "./src"
+	     :publishing-directory "./public"
+	     :publishing-function 'org-html-publish-to-html
+	     :with-author nil
+	     :with-creator nil
+	     :with-toc nil
+	     :section-numbers nil
+	     :time-stamp-file nil)))
 
 ;; Generate site
 

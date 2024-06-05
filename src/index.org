@@ -2,11 +2,14 @@
 #+TITLE: A quantum interpreter in BQN
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="assets/style.css"/>
 
-We define a quantum interpreter based on references [[https://arxiv.org/abs/1711.02086][arXiv:1711.02086]] and [[https://arxiv.org/abs/1608.03355][arXiv:1608.03355]]:
+** Preamble
 
-#+name: qbqn-block
-#+begin_src bqn :exports code
-  Sin‿Cos ← •math
+We start by importing some required system functions and defining a namespace
+with the required quantum gates:
+
+#+name: preamble
+#+begin_src bqn :exports code :results none
+  Sin‿Cos‿GCD ← •math
   U ← •rand.Range
     
   g ← {
@@ -14,38 +17,45 @@ We define a quantum interpreter based on references [[https://arxiv.org/abs/1711
     swap‿cnot⇐⟨1‿2, 2‿3⟩ {⌽⌾(𝕨⊸⊏)𝕩}¨ <=⌜˜↕4
     P⇐3‿3⊸⊑{(Sin⌾𝔽⋈Cos⌾𝔽) 𝕩⌾𝔽 =⌜˜↕4}
   }
+#+end_src
 
+** Interpreter
+
+The quantum interpreter is based on references [[https://arxiv.org/abs/1711.02086][arXiv:1711.02086]] and [[https://arxiv.org/abs/1608.03355][arXiv:1608.03355]]:
+
+#+name: q
+#+begin_src bqn :exports code :results none
   Q ← {𝕩}
 #+end_src
 
-#+RESULTS: qbqn-block
-: (function block)
 
-To test it, we employ the quantum circuit of Shor's algorithm for src_bqn[:exports code]{n‿a ← ⟨15, 11⟩},
-following references [[https://arxiv.org/abs/1804.03719][arXiv:1804.03719]] and [[https://arxiv.org/abs/2306.09122][arXiv:2306.09122]]:
+** Shor's algorithm
 
-#+name: shor-block
-#+begin_src bqn
-  sc ← ⟨
-    ⟨0⟩‿g.h
-    ⟨1⟩‿g.h
-    ⟨2⟩‿g.h
-    ⟨2, 3⟩‿g.cnot
-    ⟨2, 4⟩‿g.cnot
-    ⟨1⟩‿g.h
-    ⟨⟨1, 0⟩, g.P π÷2⟩
-    ⟨0⟩‿g.h
-    ⟨⟨1, 2⟩, g.P π÷4⟩
-    ⟨⟨0, 2⟩, g.P π÷2⟩
-    ⟨2⟩‿g.h
+As a test case, we employ the quantum circuit of Shor's algorithm
+for src_bqn[:exports code]{n‿a ← ⟨15, 11⟩}, following references
+[[https://arxiv.org/abs/1804.03719][arXiv:1804.03719]] and [[https://arxiv.org/abs/2306.09122][arXiv:2306.09122]]. We also define a classical
+post-processing function:
+
+#+name: shor
+#+begin_src bqn :exports code :results none
+  s ← ⟨
+    ⟨0⟩‿g.h ⋄ ⟨1⟩‿g.h ⋄ ⟨2⟩‿g.h
+    ⟨2, 3⟩‿g.cnot ⋄ ⟨2, 4⟩‿g.cnot ⋄ ⟨1⟩‿g.h
+    ⟨⟨1, 0⟩, g.P π÷2⟩ ⋄ ⟨0⟩‿g.h
+    ⟨⟨1, 2⟩, g.P π÷4⟩ ⋄ ⟨⟨0, 2⟩, g.P π÷2⟩ ⋄ ⟨2⟩‿g.h
   ⟩
 
   C ← {𝕩}
-    
-  C Q sc
 #+end_src
 
-#+RESULTS: shor-block
+Wir müssen wissen, wir werden wissen!
+
+#+name: run
+#+begin_src bqn
+  C Q s
+#+end_src
+
+#+RESULTS: run
 #+begin_example
 ┌─                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
 · ┌─                                                   ┌─                                                   ┌─                                                   ┌─                      ┌─                      ┌─                                                   ┌─                                                          ┌─                                                   ┌─                                                                        ┌─                                                          ┌─                                                    
@@ -63,11 +73,11 @@ following references [[https://arxiv.org/abs/1804.03719][arXiv:1804.03719]] and 
 
 The simulation can be run in the call_generate-bqn-link(), and the results can be
 compared with those from a real [[./ibm_eagle/shor_factorize_fifteen.html][quantum computer]]. The complete source code is available in
-a GitHub [[https://github.com/Panadestein/bqun][repository]].
+a GitHub [[https://github.com/Panadestein/bqun][repository]]. 
 
 #+name: generate-bqn-link
 #+begin_src emacs-lisp :noweb yes :noweb-prefix no :exports none :results raw
-  (let* ((bqn-code (concat "<<qbqn-block>>" "\n" "<<shor-block>>"))
+  (let* ((bqn-code (concat "<<preamble>>\n" "<<q>>\n" "<<shor>>\n" "run"))
          (encoded (base64-encode-string (encode-coding-string bqn-code 'utf-8) t)))
     (concat "[[https://mlochbaum.github.io/BQN/try.html#code=" encoded "][BQN repl]]"))
 #+end_src

@@ -4,8 +4,8 @@
 
 ** Preamble
 
-We start by importing some required system functions and defining a namespace
-with the required quantum gates:
+We start by importing some required system functions, defining some utilities to work with complex numbers,
+and a namespace with the required quantum gates:
 
 #+name: preamble
 #+begin_src bqn :exports code :results none
@@ -21,9 +21,9 @@ with the required quantum gates:
 
 ** Interpreter
 
-The quantum interpreter is based on references [[https://arxiv.org/abs/1711.02086][arXiv:1711.02086]] and [[https://arxiv.org/abs/1608.03355][arXiv:1608.03355]]:
+The (100 chars) quantum interpreter is based on references [[https://arxiv.org/abs/1711.02086][arXiv:1711.02086]] and [[https://arxiv.org/abs/1608.03355][arXiv:1608.03355]]:
 
-#+name: q
+#+name: interpreter
 #+begin_src bqn :exports code :results none
   Q ← {𝕩}
 #+end_src
@@ -36,7 +36,7 @@ for src_bqn[:exports code]{n‿a ← ⟨15, 11⟩}, following references
 [[https://arxiv.org/abs/1804.03719][arXiv:1804.03719]] and [[https://arxiv.org/abs/2306.09122][arXiv:2306.09122]]. We also define a classical
 post-processing function:
 
-#+name: shor
+#+name: test
 #+begin_src bqn :exports code :results none
   s ← ⟨
     ⟨0⟩‿g.h ⋄ ⟨1⟩‿g.h ⋄ ⟨2⟩‿g.h
@@ -77,7 +77,7 @@ a GitHub [[https://github.com/Panadestein/bqun][repository]].
 
 #+name: generate-bqn-link
 #+begin_src emacs-lisp :noweb yes :noweb-prefix no :exports none :results raw
-  (let* ((bqn-code (concat "<<preamble>>\n" "<<q>>\n" "<<shor>>\n" "run"))
+  (let* ((bqn-code (concat "<<preamble>>\n\n" "<<interpreter>>\n\n" "<<test>>\n\n" "<<run>>"))
          (encoded (base64-encode-string (encode-coding-string bqn-code 'utf-8) t)))
     (concat "[[https://mlochbaum.github.io/BQN/try.html#code=" encoded "][BQN repl]]"))
 #+end_src

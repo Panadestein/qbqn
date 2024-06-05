@@ -201,7 +201,16 @@ We define a quantum interpreter based on references <a href="https://arxiv.org/a
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bqn" id="orgd1c1230">qbqn ← {psi⇐0}
+<pre class="src src-bqn" id="orgd84b036">Sin‿Cos ← •math
+U ← •rand.Range
+
+g ← {
+  id‿x⇐⌽‿⊢ {𝕎𝕩}¨ &lt;=⌜˜↕2, h⇐-⌾(1‿1⊸⊑)2‿2⥊÷√2
+  swap‿cnot⇐⟨1‿2, 2‿3⟩ {⌽⌾(𝕨⊸⊏)𝕩}¨ &lt;=⌜˜↕4
+  P⇐3‿3⊸⊑{(Sin⌾𝔽⋈Cos⌾𝔽) 𝕩⌾𝔽 =⌜˜↕4}
+}
+
+Q ← {𝕩}
 </pre>
 </div>
 
@@ -211,15 +220,28 @@ following references <a href="https://arxiv.org/abs/1804.03719">arXiv:1804.03719
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bqn" id="org6c4f036">shor ← {
-  n⇐15
-  a⇐11
-}
+<pre class="src src-bqn" id="orgbd96c7b">sc ← ⟨
+  ⟨0⟩‿g.h
+  ⟨1⟩‿g.h
+  ⟨2⟩‿g.h
+  ⟨2, 3⟩‿g.cnot
+  ⟨2, 4⟩‿g.cnot
+  ⟨1⟩‿g.h
+  ⟨⟨1, 0⟩, g.P π÷2⟩
+  ⟨0⟩‿g.h
+  ⟨⟨1, 2⟩, g.P π÷4⟩
+  ⟨⟨0, 2⟩, g.P π÷2⟩
+  ⟨2⟩‿g.h
+⟩
+
+C ← {𝕩}
+
+C Q sc
 </pre>
 </div>
 
 <p>
-The simulation can be run in the <a href="https://mlochbaum.github.io/BQN/try.html#code=cWJxbiDihpAge3BzaeKHkDB9CnNob3Ig4oaQIHsKICBu4oeQMTUKICBh4oeQMTEKfQ==">BQN repl</a>, and the results can be
+The simulation can be run in the <a href="https://mlochbaum.github.io/BQN/try.html#code=U2lu4oC/Q29zIOKGkCDigKJtYXRoClUg4oaQIOKAonJhbmQuUmFuZ2UKCmcg4oaQIHsKICBpZOKAv3jih5DijL3igL/iiqIge/CdlY7wnZWpfcKoIDw94oycy5zihpUyLCBo4oeQLeKMvigx4oC/MeKKuOKKkSky4oC/MuKlisO34oiaMgogIHN3YXDigL9jbm904oeQ4p+oMeKAvzIsIDLigL8z4p+pIHvijL3ijL4o8J2VqOKKuOKKjynwnZWpfcKoIDw94oycy5zihpU0CiAgUOKHkDPigL8z4oq44oqReyhTaW7ijL7wnZS94ouIQ29z4oy+8J2UvSkg8J2VqeKMvvCdlL0gPeKMnMuc4oaVNH0KfQoKUSDihpAge/Cdlal9CnNjIOKGkCDin6gKICDin6gw4p+p4oC/Zy5oCiAg4p+oMeKfqeKAv2cuaAogIOKfqDLin6nigL9nLmgKICDin6gyLCAz4p+p4oC/Zy5jbm90CiAg4p+oMiwgNOKfqeKAv2cuY25vdAogIOKfqDHin6nigL9nLmgKICDin6jin6gxLCAw4p+pLCBnLlAgz4DDtzLin6kKICDin6gw4p+p4oC/Zy5oCiAg4p+o4p+oMSwgMuKfqSwgZy5QIM+Aw7c04p+pCiAg4p+o4p+oMCwgMuKfqSwgZy5QIM+Aw7cy4p+pCiAg4p+oMuKfqeKAv2cuaArin6kKCkMg4oaQIHvwnZWpfQoKQyBRIHNj">BQN repl</a>, and the results can be
 compared with those from a real <a href="./ibm_eagle/shor_factorize_fifteen.html">quantum computer</a>. The complete source code is available in
 a GitHub <a href="https://github.com/Panadestein/bqun">repository</a>.
 </p>

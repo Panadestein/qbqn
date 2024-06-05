@@ -25,19 +25,23 @@ The (100 chars) quantum interpreter is based on references [[https://arxiv.org/a
 
 #+name: interpreter
 #+begin_src bqn :exports code :results none
-  Q ← {𝕩}
+  Q ← {𝕨𝕊qt‿qc‿s:
+    𝕨+qc
+  }
 #+end_src
-
 
 ** Shor's algorithm
 
 As a test case, we employ the quantum circuit of Shor's algorithm
-for src_bqn[:exports code]{n‿a ← ⟨15, 11⟩}, following references
-[[https://arxiv.org/abs/1804.03719][arXiv:1804.03719]] and [[https://arxiv.org/abs/2306.09122][arXiv:2306.09122]]. We also define a classical
+for the number fifteen and base eleven, following references
+[[https://arxiv.org/abs/1804.03719][arXiv:1804.03719]] and [[https://arxiv.org/abs/2306.09122][arXiv:2306.09122]]. The resulting compiled circuit
+uses five qubits, three of them are control ones. We also define a classical
 post-processing function:
 
 #+name: test
 #+begin_src bqn :exports code :results none
+  n‿a‿qt‿qc‿k ← ⟨15, 11, 5, 3, 2⋆10⟩
+
   s ← ⟨
     ⟨0⟩‿g.h ⋄ ⟨1⟩‿g.h ⋄ ⟨2⟩‿g.h
     ⟨2, 3⟩‿g.cnot ⋄ ⟨2, 4⟩‿g.cnot ⋄ ⟨1⟩‿g.h
@@ -45,31 +49,15 @@ post-processing function:
     ⟨⟨1, 2⟩, g.P π÷4⟩ ⋄ ⟨⟨0, 2⟩, g.P π÷2⟩ ⋄ ⟨2⟩‿g.h
   ⟩
 
-  C ← {𝕩}
+  C ← {+‿-{n GCD 𝕩𝕎1}¨ a⋆ (≠÷2×⊑∘⍒) 0⌾⊑+˝∘‿(2⋆qc)⥊𝕩}
 #+end_src
 
 Wir müssen wissen, wir werden wissen!
 
 #+name: run
 #+begin_src bqn
-  C Q s
+  k C∘Q qt‿qc‿s
 #+end_src
-
-#+RESULTS: run
-#+begin_example
-┌─                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
-· ┌─                                                   ┌─                                                   ┌─                                                   ┌─                      ┌─                      ┌─                                                   ┌─                                                          ┌─                                                   ┌─                                                                        ┌─                                                          ┌─                                                    
-  · ⟨ 0 ⟩ ┌─                                           · ⟨ 1 ⟩ ┌─                                           · ⟨ 2 ⟩ ┌─                                           · ⟨ 2 3 ⟩ ┌─            · ⟨ 2 4 ⟩ ┌─            · ⟨ 1 ⟩ ┌─                                           · ⟨ 1 0 ⟩ ┌─                                                · ⟨ 0 ⟩ ┌─                                           · ⟨ 1 2 ⟩ ┌─                                                              · ⟨ 0 2 ⟩ ┌─                                                · ⟨ 2 ⟩ ┌─                                            
-          ╵ 0.7071067811865475  0.7071067811865475             ╵ 0.7071067811865475  0.7071067811865475             ╵ 0.7071067811865475  0.7071067811865475               ╵ 1 0 0 0               ╵ 1 0 0 0             ╵ 0.7071067811865475  0.7071067811865475               · ┌─          ┌─                                          ╵ 0.7071067811865475  0.7071067811865475               · ┌─                           ┌─                                         · ┌─          ┌─                                          ╵ 0.7071067811865475  0.7071067811865475      
-            0.7071067811865475 ¯0.7071067811865475               0.7071067811865475 ¯0.7071067811865475               0.7071067811865475 ¯0.7071067811865475                 0 1 0 0                 0 1 0 0               0.7071067811865475 ¯0.7071067811865475                 ╵ 1 0 0 0   ╵ 1 0 0                     0                 0.7071067811865475 ¯0.7071067811865475                 ╵ 1 0 0                  0   ╵ 1 0 0                  0                   ╵ 1 0 0 0   ╵ 1 0 0                     0                 0.7071067811865475 ¯0.7071067811865475      
-                                                   ┘                                                    ┘                                                    ┘               0 0 0 1                 0 0 0 1                                                      ┘                 0 1 0 0     0 1 0                     0                                                        ┘                 0 1 0                  0     0 1 0                  0                     0 1 0 0     0 1 0                     0                                                        ┘    
-                                                     ┘                                                    ┘                                                    ┘             0 0 1 0                 0 0 1 0                                                        ┘               0 0 1 0     0 0 1                     0                                                          ┘               0 0 1                  0     0 0 1                  0                     0 0 1 0     0 0 1                     0                                                          ┘  
-                                                                                                                                                                                     ┘                       ┘                                                                      0 0 0 1     0 0 0 6.123233995736766e¯17                                                                          0 0 0 0.7071067811865475     0 0 0 0.7071067811865476                     0 0 0 1     0 0 0 6.123233995736766e¯17                                                             
-                                                                                                                                                                                       ┘                       ┘                                                                            ┘                               ┘                                                                                                 ┘                            ┘                           ┘                               ┘                                                           
-                                                                                                                                                                                                                                                                                                                              ┘                                                                                                                              ┘                                                           ┘                                                         
-                                                                                                                                                                                                                                                                                                                                ┘                                                                                                                              ┘                                                           ┘                                                       
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ┘
-#+end_example
 
 The simulation can be run in the call_generate-bqn-link(), and the results can be
 compared with those from a real [[./ibm_eagle/shor_factorize_fifteen.html][quantum computer]]. The complete source code is available in

@@ -4,8 +4,8 @@
 
 ** Preamble
 
-We start by importing some required system functions, defining some utilities to work with complex numbers,
-and a namespace with the required quantum gates:
+We start by importing some required system functions, and defining some utilities to
+work with complex numbers and a namespace with the required quantum gates:
 
 #+name: preamble
 #+begin_src bqn :exports code :results none
@@ -21,42 +21,50 @@ and a namespace with the required quantum gates:
 
 ** Interpreter
 
-The (100 chars) quantum interpreter is based on references [[https://arxiv.org/abs/1711.02086][arXiv:1711.02086]] and [[https://arxiv.org/abs/1608.03355][arXiv:1608.03355]]:
+The (100 chars) quantum interpreter is based on references [[https://arxiv.org/abs/1711.02086][arXiv:1711.02086]] and
+[[https://arxiv.org/abs/1608.03355][arXiv:1608.03355]]. For simplicity, we always measure at the end of the execution:
 
 #+name: interpreter
-#+begin_src bqn :exports code :results none
-  Q ← {𝕊qt‿qc‿s:
-    qc
+#+begin_src bqn :exports code
+  Q ← {𝕊qb‿sc:
+    psi ← 1⌾⊑(2⋆qb)⥊0
+    K ← ∾⊣×·<⊢
+    »⊸<∨` 0(-`˜⟜U˜<⊣) psi
   }
+  Q qb‿sc
 #+end_src
+
+#+RESULTS: interpreter
+: ⟨ 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ⟩
 
 ** Shor's algorithm
 
 As a test case, we employ the quantum circuit of Shor's algorithm
 for the number fifteen and base eleven, following references
 [[https://arxiv.org/abs/1804.03719][arXiv:1804.03719]] and [[https://arxiv.org/abs/2306.09122][arXiv:2306.09122]]. The resulting compiled circuit
-uses five qubits, three of them are control ones. We also define a classical
-post-processing function:
+uses five qubits, three of which serve as control qubits. To enhance
+statistical accuracy, the experiment is repeated multiple times.
+Additionally, we define a classical post-processing function:
 
 #+name: test
 #+begin_src bqn :exports code :results none
-  n‿a‿qt‿qc‿k ← ⟨15, 11, 5, 3, 2⋆10⟩
+  n‿a‿qb‿r ← ⟨15, 11, 5, 2⋆10⟩
 
-  s ← ⟨
+  sc ← ⟨
     ⟨0⟩‿g.h ⋄ ⟨1⟩‿g.h ⋄ ⟨2⟩‿g.h
     ⟨2, 3⟩‿g.cnot ⋄ ⟨2, 4⟩‿g.cnot ⋄ ⟨1⟩‿g.h
     ⟨⟨1, 0⟩, g.P π÷2⟩ ⋄ ⟨0⟩‿g.h
     ⟨⟨1, 2⟩, g.P π÷4⟩ ⋄ ⟨⟨0, 2⟩, g.P π÷2⟩ ⋄ ⟨2⟩‿g.h
   ⟩
 
-  C ← {+‿-{n GCD 𝕩𝕎1}¨ a⋆ (≠÷2×⊑∘⍒) 0⌾⊑+˝∘‿(2⋆qc)⥊𝕩}
+  C ← {n (⊣≡×´∘GCD) +‿-{𝕩𝕎1}¨ a⋆(≠÷2×⊑∘⍒) 0⌾⊑+˝∘‿(2⋆qb-2)⥊𝕩}
 #+end_src
 
 Wir müssen wissen, wir werden wissen!
 
 #+name: run
 #+begin_src bqn
-  C +˝Q⍟(k⥊1) qt‿qc‿s
+  C +˝Q⍟(r⥊1) qb‿sc
 #+end_src
 
 The simulation can be run in the call_generate-bqn-link(), and the results can be

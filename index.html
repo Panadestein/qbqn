@@ -197,16 +197,16 @@
 <div id="content" class="content">
 <h1 class="title">A quantum interpreter in BQN</h1>
 
-<div id="outline-container-org87888ed" class="outline-2">
-<h2 id="org87888ed">Preamble</h2>
-<div class="outline-text-2" id="text-org87888ed">
+<div id="outline-container-orge4d4195" class="outline-2">
+<h2 id="orge4d4195">Preamble</h2>
+<div class="outline-text-2" id="text-orge4d4195">
 <p>
-We start by importing some required system functions, defining some utilities to work with complex numbers,
-and a namespace with the required quantum gates:
+We start by importing some required system functions, and defining some utilities to
+work with complex numbers and a namespace with the required quantum gates:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bqn" id="orga9f7a0c">Sin‿Cos‿GCD ← •math
+<pre class="src src-bqn" id="orge907b8c">Sin‿Cos‿GCD ← •math
 U ← •rand.Range
 
 g ← {
@@ -219,44 +219,49 @@ g ← {
 </div>
 </div>
 
-<div id="outline-container-orgad8cc69" class="outline-2">
-<h2 id="orgad8cc69">Interpreter</h2>
-<div class="outline-text-2" id="text-orgad8cc69">
+<div id="outline-container-orga99be8a" class="outline-2">
+<h2 id="orga99be8a">Interpreter</h2>
+<div class="outline-text-2" id="text-orga99be8a">
 <p>
-The (100 chars) quantum interpreter is based on references <a href="https://arxiv.org/abs/1711.02086">arXiv:1711.02086</a> and <a href="https://arxiv.org/abs/1608.03355">arXiv:1608.03355</a>:
+The (100 chars) quantum interpreter is based on references <a href="https://arxiv.org/abs/1711.02086">arXiv:1711.02086</a> and
+<a href="https://arxiv.org/abs/1608.03355">arXiv:1608.03355</a>. For simplicity, we always measure at the end of the execution:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bqn" id="org70484ba">Q ← {𝕊qt‿qc‿s:
-  qc
+<pre class="src src-bqn" id="orgfb0989a">Q ← {𝕊qb‿sc:
+  psi ← 1⌾⊑(2⋆qb)⥊0
+  K ← ∾⊣×·&lt;⊢
+  »⊸&lt;∨` 0(-`˜⟜U˜&lt;⊣) psi
 }
+Q qb‿sc
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org7396abd" class="outline-2">
-<h2 id="org7396abd">Shor's algorithm</h2>
-<div class="outline-text-2" id="text-org7396abd">
+<div id="outline-container-org4b556c1" class="outline-2">
+<h2 id="org4b556c1">Shor's algorithm</h2>
+<div class="outline-text-2" id="text-org4b556c1">
 <p>
 As a test case, we employ the quantum circuit of Shor's algorithm
 for the number fifteen and base eleven, following references
 <a href="https://arxiv.org/abs/1804.03719">arXiv:1804.03719</a> and <a href="https://arxiv.org/abs/2306.09122">arXiv:2306.09122</a>. The resulting compiled circuit
-uses five qubits, three of them are control ones. We also define a classical
-post-processing function:
+uses five qubits, three of which serve as control qubits. To enhance
+statistical accuracy, the experiment is repeated multiple times.
+Additionally, we define a classical post-processing function:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bqn" id="org0f0d880">n‿a‿qt‿qc‿k ← ⟨15, 11, 5, 3, 2⋆10⟩
+<pre class="src src-bqn" id="orgf54c8a0">n‿a‿qb‿r ← ⟨15, 11, 5, 2⋆10⟩
 
-s ← ⟨
+sc ← ⟨
   ⟨0⟩‿g.h ⋄ ⟨1⟩‿g.h ⋄ ⟨2⟩‿g.h
   ⟨2, 3⟩‿g.cnot ⋄ ⟨2, 4⟩‿g.cnot ⋄ ⟨1⟩‿g.h
   ⟨⟨1, 0⟩, g.P π÷2⟩ ⋄ ⟨0⟩‿g.h
   ⟨⟨1, 2⟩, g.P π÷4⟩ ⋄ ⟨⟨0, 2⟩, g.P π÷2⟩ ⋄ ⟨2⟩‿g.h
 ⟩
 
-C ← {+‿-{n GCD 𝕩𝕎1}¨ a⋆ (≠÷2×⊑∘⍒) 0⌾⊑+˝∘‿(2⋆qc)⥊𝕩}
+C ← {n (⊣≡×´∘GCD) +‿-{𝕩𝕎1}¨ a⋆(≠÷2×⊑∘⍒) 0⌾⊑+˝∘‿(2⋆qb-2)⥊𝕩}
 </pre>
 </div>
 
@@ -265,12 +270,12 @@ Wir müssen wissen, wir werden wissen!
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bqn" id="org7272907">C +˝Q⍟(k⥊1) qt‿qc‿s
+<pre class="src src-bqn" id="org13a5cef">C +˝Q⍟(r⥊1) qb‿sc
 </pre>
 </div>
 
 <p>
-The simulation can be run in the <a href="https://mlochbaum.github.io/BQN/try.html#code=U2lu4oC/Q29z4oC/R0NEIOKGkCDigKJtYXRoClUg4oaQIOKAonJhbmQuUmFuZ2UKCmcg4oaQIHsKICBpZOKAv3jih5DijL3igL/iiqIge/CdlY7wnZWpfcKoIDw94oycy5zihpUyLCBo4oeQLeKMvigx4oC/MeKKuOKKkSky4oC/MuKlisO34oiaMgogIHN3YXDigL9jbm904oeQ4p+oMeKAvzIsIDLigL8z4p+pIHvijL3ijL4o8J2VqOKKuOKKjynwnZWpfcKoIDw94oycy5zihpU0CiAgUOKHkDPigL8z4oq44oqReyhTaW7ijL7wnZS94ouIQ29z4oy+8J2UvSkg8J2VqeKMvvCdlL0gPeKMnMuc4oaVNH0KfQoKUSDihpAge/CdlYpxdOKAv3Fj4oC/czoKICBxYwp9Cgpu4oC/YeKAv3F04oC/cWPigL9rIOKGkCDin6gxNSwgMTEsIDUsIDMsIDLii4YxMOKfqQoKcyDihpAg4p+oCiAg4p+oMOKfqeKAv2cuaCDii4Qg4p+oMeKfqeKAv2cuaCDii4Qg4p+oMuKfqeKAv2cuaAogIOKfqDIsIDPin6nigL9nLmNub3Qg4ouEIOKfqDIsIDTin6nigL9nLmNub3Qg4ouEIOKfqDHin6nigL9nLmgKICDin6jin6gxLCAw4p+pLCBnLlAgz4DDtzLin6kg4ouEIOKfqDDin6nigL9nLmgKICDin6jin6gxLCAy4p+pLCBnLlAgz4DDtzTin6kg4ouEIOKfqOKfqDAsIDLin6ksIGcuUCDPgMO3MuKfqSDii4Qg4p+oMuKfqeKAv2cuaArin6kKCkMg4oaQIHsr4oC/LXtuIEdDRCDwnZWp8J2VjjF9wqggYeKLhiAo4omgw7cyw5fiipHiiJjijZIpIDDijL7iipEry53iiJjigL8oMuKLhnFjKeKlivCdlal9CgpDICvLnVHijZ8oa+KlijEpIHF04oC/cWPigL9z">BQN repl</a>, and the results can be
+The simulation can be run in the <a href="https://mlochbaum.github.io/BQN/try.html#code=U2lu4oC/Q29z4oC/R0NEIOKGkCDigKJtYXRoClUg4oaQIOKAonJhbmQuUmFuZ2UKCmcg4oaQIHsKICBpZOKAv3jih5DijL3igL/iiqIge/CdlY7wnZWpfcKoIDw94oycy5zihpUyLCBo4oeQLeKMvigx4oC/MeKKuOKKkSky4oC/MuKlisO34oiaMgogIHN3YXDigL9jbm904oeQ4p+oMeKAvzIsIDLigL8z4p+pIHvijL3ijL4o8J2VqOKKuOKKjynwnZWpfcKoIDw94oycy5zihpU0CiAgUOKHkDPigL8z4oq44oqReyhTaW7ijL7wnZS94ouIQ29z4oy+8J2UvSkg8J2VqeKMvvCdlL0gPeKMnMuc4oaVNH0KfQoKUSDihpAge/CdlYpxYuKAv3NjOgogIHBzaSDihpAgMeKMvuKKkSgy4ouGcWIp4qWKMAogIEsg4oaQIOKIvuKKo8OXwrc84oqiCiAgwrviirg84oioYCAwKC1gy5zin5xVy5w84oqjKSBwc2kKfQpRIHFi4oC/c2MKCm7igL9h4oC/cWLigL9yIOKGkCDin6gxNSwgMTEsIDUsIDLii4YxMOKfqQoKc2Mg4oaQIOKfqAogIOKfqDDin6nigL9nLmgg4ouEIOKfqDHin6nigL9nLmgg4ouEIOKfqDLin6nigL9nLmgKICDin6gyLCAz4p+p4oC/Zy5jbm90IOKLhCDin6gyLCA04p+p4oC/Zy5jbm90IOKLhCDin6gx4p+p4oC/Zy5oCiAg4p+o4p+oMSwgMOKfqSwgZy5QIM+Aw7cy4p+pIOKLhCDin6gw4p+p4oC/Zy5oCiAg4p+o4p+oMSwgMuKfqSwgZy5QIM+Aw7c04p+pIOKLhCDin6jin6gwLCAy4p+pLCBnLlAgz4DDtzLin6kg4ouEIOKfqDLin6nigL9nLmgK4p+pCgpDIOKGkCB7biAo4oqj4omhw5fCtOKImEdDRCkgK+KAvy178J2VqfCdlY4xfcKoIGHii4Yo4omgw7cyw5fiipHiiJjijZIpIDDijL7iipEry53iiJjigL8oMuKLhnFiLTIp4qWK8J2VqX0KCkMgK8udUeKNnyhy4qWKMSkgcWLigL9zYw==">BQN repl</a>, and the results can be
 compared with those from a real <a href="./ibm_eagle/shor_factorize_fifteen.html">quantum computer</a>. The complete source code is available in
 a GitHub <a href="https://github.com/Panadestein/bqun">repository</a>. 
 </p>

@@ -9,6 +9,10 @@ body, input, select, textarea, pre, code, kbd {
   font-family: 'BQN', monospace;
 }
 
+body {
+  text-align: justify;
+}
+
 /* Basic styling for code elements */
 code, pre {
   background-color: #e3e7e7;

@@ -8,7 +8,7 @@ We start by importing some required system functions, and defining some utilitie
 work with complex numbers and a namespace with the required quantum gates:
 
 #+name: preamble
-#+begin_src bqn :exports code :results none
+#+begin_src bqn :exports code :results none :tangle ./perf/q.bqn
   Sin‿Cos‿GCD ← •math
   U ← •rand.Range
   _cp ← {(-´𝔽¨)⋈(+´𝔽¨)⟜⌽}
@@ -27,21 +27,28 @@ The (call_count-chars() chars) quantum interpreter is based on references [[http
 and [[https://arxiv.org/abs/1608.03355][arXiv:1608.03355]]. For simplicity, we always measure at the end of the execution:
 
 #+name: interpreter
-#+begin_src bqn :exports code
+#+begin_src bqn :exports code :tangle ./perf/q.bqn
   Q ← {𝕊qb‿sc:
     psi‿hs ← ({1⌾⊑𝕩⥊0}⋈⊢) 2⋆qb
     K ← {(∾⊣×·<⊢)⍟(𝕨-1)˜ 𝕩}
     L ← {(∾⊣×·<⊢)´ ⟨(hs-𝕨-≠𝕩) K g.id, 𝕩, 𝕨 K g.id ⟩}
     #T ← {≍´(<∘<´/¨⊢) (↕∘≠⋈⊢) (⊢´∧)¨ 1↓↑𝕩}
-    T ← {(↕∘≠⋈⊢) (⊢´∧)¨ 1↓↑𝕩}
+    #  psi ()˜´ ⌽sc
     »⊸<∨` 0(-`˜⟜U˜<⊣) psi
-    T [3, 4, 0, 2, 1]
   }
-  Q qb‿sc
+  T ← {𝕊a: (⊢∾⊏a)⍟{𝕩<𝕩⊏a}¨ ↕∘≠a}
+  T [3, 4, 0, 2, 1]
 #+end_src
 
 #+RESULTS: interpreter
-: ⟨ ⟨ 0 1 2 3 4 ⟩ ⟨ 3 4 4 4 4 ⟩ ⟩
+: ┌─                                       
+: · ┌·        ┌·        ┌·    ┌·    ┌·     
+:   · ┌·      · ┌·      · 2   · 3   · 4    
+:     · 3       · 3         ┘     ┘     ┘  
+:         ┘         ┘                      
+:           ┘         ┘                    
+:                                         ┘
+
 
 ** Shor's algorithm
 
@@ -53,7 +60,7 @@ statistical accuracy, the experiment is repeated multiple times.
 Additionally, we define a classical post-processing function:
 
 #+name: test
-#+begin_src bqn :exports code :results none
+#+begin_src bqn :exports code :results none :tangle ./perf/q.bqn
   n‿a‿qb‿r ← ⟨15, 11, 5, 2⋆10⟩
 
   sc ← ⟨
@@ -69,27 +76,51 @@ Additionally, we define a classical post-processing function:
 Wir müssen wissen, wir werden wissen!
 
 #+name: run
-#+begin_src bqn
-  C +˝Q⍟(r⥊1) qb‿sc
+#+begin_src bqn :exports both :tangle ./perf/q.bqn
+  #C +˝Q⍟(r⥊1) qb‿sc
 #+end_src
 
-Compare the result with the one from a real IBM [[./ibm_eagle/shor_factorize_fifteen.html][quantum computer]].
+Compare the result with that from a real [[./ibm_eagle/shor_factorize_fifteen.html][quantum computer]].
 
 ** Epilogue
 
 Why BQN, you may ask? Well, the combination of tacit and functional style it offers makes
-programming feel like solving a fun algebraic problem. Try to run the simulation in 
-the call_generate-bqn-link() and explore it! If you are interested, the source code of
-this project is hosted in a GitHub [[https://github.com/Panadestein/bqun][repository]]. 
+programming feel like solving a fun algebraic problem, as opposed to writing a manifesto.
+Try to run the simulation in the call_generate-bqn-link() and explore it! If you are
+interested, the source code of this project is hosted in a GitHub [[https://github.com/Panadestein/bqun][repository]].
+
+One last thing, if you care about performance, knock yourself out:
+
+#+begin_export html
+<details>
+<summary>CBQN vs SBCL</summary>
+#+end_export
+
+#+begin_src bash :exports results :tangle no :results raw :wrap example
+  #hyperfine --runs 5 'cbqn -f ./perf/q.bqn' 'sbcl --script ./perf/q.lisp'
+  hyperfine --runs 5 'cbqn -f ./perf/q.bqn'
+#+end_src
+
+#+RESULTS:
+#+begin_example
+Benchmark 1: cbqn -f ./perf/q.bqn
+  Time (mean ± σ):       2.5 ms ±   0.4 ms    [User: 1.5 ms, System: 1.3 ms]
+  Range (min … max):     2.0 ms …   3.0 ms    5 runs
+ 
+#+end_example
+
+#+begin_export html
+</details>
+#+end_export
 
 #+name: generate-bqn-link
-#+begin_src emacs-lisp :noweb yes :noweb-prefix no :exports none :results raw
+#+begin_src emacs-lisp :noweb yes :noweb-prefix no :exports none :results raw :tangle no
   (let* ((bqn-code (concat "<<preamble>>\n\n" "<<interpreter>>\n\n" "<<test>>\n\n" "<<run>>"))
          (encoded (base64-encode-string (encode-coding-string bqn-code 'utf-8) t)))
     (concat "[[https://mlochbaum.github.io/BQN/try.html#code=" encoded "][BQN repl]]"))
 #+end_src
 
 #+name: count-chars
-#+begin_src emacs-lisp :noweb yes :noweb-prefix no :exports none :results raw
-  (length "<<interpreter>>")
+#+begin_src emacs-lisp :noweb yes :noweb-prefix no :exports none :results raw :tangle no
+  (- (length "<<interpreter>>") 4)
 #+end_src

@@ -20,10 +20,11 @@ work with complex numbers and a namespace with the required quantum gates:
   }
 #+end_src
 
+
 ** Interpreter
 
-The (100 chars) quantum interpreter is based on references [[https://arxiv.org/abs/1711.02086][arXiv:1711.02086]] and
-[[https://arxiv.org/abs/1608.03355][arXiv:1608.03355]]. For simplicity, we always measure at the end of the execution:
+The (call_count-chars() chars) quantum interpreter is based on references [[https://arxiv.org/abs/1711.02086][arXiv:1711.02086]]
+and [[https://arxiv.org/abs/1608.03355][arXiv:1608.03355]]. For simplicity, we always measure at the end of the execution:
 
 #+name: interpreter
 #+begin_src bqn :exports code
@@ -31,18 +32,16 @@ The (100 chars) quantum interpreter is based on references [[https://arxiv.org/a
     psi‿hs ← ({1⌾⊑𝕩⥊0}⋈⊢) 2⋆qb
     K ← {(∾⊣×·<⊢)⍟(𝕨-1)˜ 𝕩}
     L ← {(∾⊣×·<⊢)´ ⟨(hs-𝕨-≠𝕩) K g.id, 𝕩, 𝕨 K g.id ⟩}
-    T ← ↕∘≠≍⍋∘⍋
+    #T ← {≍´(<∘<´/¨⊢) (↕∘≠⋈⊢) (⊢´∧)¨ 1↓↑𝕩}
+    T ← {(↕∘≠⋈⊢) (⊢´∧)¨ 1↓↑𝕩}
     »⊸<∨` 0(-`˜⟜U˜<⊣) psi
-    T [2, 0, 3, 1]
+    T [3, 4, 0, 2, 1]
   }
   Q qb‿sc
-  # [(0, 2), (1, 2), (2, 3)]
-  (↕∘≠≍⊢) (⊢/˜↕∘≠<⊢) (⊢´∧)¨1↓↑ [2, 0, 3, 1, 4, 5, 7, 6]
-  {(⊢/˜↕∘≠<⊢) (↕∘≠⋈⊢) (⊢´∧)¨1↓↑𝕩} [2, 0, 3, 1, 4, 5, 7, 6]
 #+end_src
 
 #+RESULTS: interpreter
-: ⟨ 2 2 3 7 ⟩
+: ⟨ ⟨ 0 1 2 3 4 ⟩ ⟨ 3 4 4 4 4 ⟩ ⟩
 
 ** Shor's algorithm
 
@@ -74,13 +73,23 @@ Wir müssen wissen, wir werden wissen!
   C +˝Q⍟(r⥊1) qb‿sc
 #+end_src
 
-The simulation can be run in the call_generate-bqn-link(), and the results can be
-compared with those from a real [[./ibm_eagle/shor_factorize_fifteen.html][quantum computer]]. The complete source code is available in
-a GitHub [[https://github.com/Panadestein/bqun][repository]]. 
+Compare the result with the one from a real IBM [[./ibm_eagle/shor_factorize_fifteen.html][quantum computer]].
+
+** Epilogue
+
+Why BQN, you may ask? Well, the combination of tacit and functional style it offers makes
+programming feel like solving a fun algebraic problem. Try to run the simulation in 
+the call_generate-bqn-link() and explore it! If you are interested, the source code of
+this project is hosted in a GitHub [[https://github.com/Panadestein/bqun][repository]]. 
 
 #+name: generate-bqn-link
 #+begin_src emacs-lisp :noweb yes :noweb-prefix no :exports none :results raw
   (let* ((bqn-code (concat "<<preamble>>\n\n" "<<interpreter>>\n\n" "<<test>>\n\n" "<<run>>"))
          (encoded (base64-encode-string (encode-coding-string bqn-code 'utf-8) t)))
     (concat "[[https://mlochbaum.github.io/BQN/try.html#code=" encoded "][BQN repl]]"))
+#+end_src
+
+#+name: count-chars
+#+begin_src emacs-lisp :noweb yes :noweb-prefix no :exports none :results raw
+  (length "<<interpreter>>")
 #+end_src

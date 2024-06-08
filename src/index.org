@@ -30,17 +30,17 @@ and [[https://arxiv.org/abs/1608.03355][arXiv:1608.03355]]. For simplicity, we a
 #+begin_src bqn :exports code :tangle ./perf/q.bqn
   Q ← {𝕊qb‿sc:
     psi‿hs ← ({1⌾⊑𝕩⥊0}⋈⊢) 2⋆qb
-    K ← {(∾⊣×·<⊢)⍟(𝕨-1)˜ 𝕩}
-    L ← {(∾⊣×·<⊢)´ ⟨(hs-𝕨-≠𝕩) K g.id, 𝕩, 𝕨 K g.id ⟩}
-    T ← ∾↕∘≠{a←𝕩 ⋄ i←𝕨{𝕩⊑a}•_while_{𝕩<𝕨}𝕨⊑a ⋄ 𝕨<◶⟨⟩‿{(⊢∾(1↓⌽))𝕨+↕𝕩-𝕨}i}¨<
-    #  psi ()˜´ ⌽sc
-    »⊸<∨` 0(-`˜⟜U˜<⊣) psi
+    MV‿KM ← (+˝∘×⎉1‿∞)‿(∾⊣×·<⊢)
+    K ← {KM⍟(𝕨-1)˜ 𝕩}
+    L ← {KM´ ⟨(hs-𝕨-≠𝕩) K g.id, 𝕩, 𝕨 K g.id ⟩}
+    T ← ∾↕∘≠{a←𝕩 ⋄ i←𝕨{𝕩⊑a}•_while_{𝕩<𝕨}𝕨⊑a ⋄ 𝕨<◶⟨⟩‿{(⊢∾1⊸↓∘⌽)𝕨+↕𝕩-𝕨}i}¨<
+    A ← 1⊸=◶{L𝕨 MV _cp 𝕩}‿@∘≠ ⊏
+    »⊸<∨` 0(-`˜⟜U˜<⊣) psi A˜´ ⌽sc
   }
 #+end_src
 
 #+RESULTS: interpreter
 : (function block)
-
 
 ** Shor's algorithm
 
@@ -76,12 +76,11 @@ Compare the result with that from a real [[./ibm_eagle/shor_factorize_fifteen.ht
 
 ** Epilogue
 
-Why BQN, you may ask? Well, the combination of tacit and functional style it offers makes
-programming feel like solving a fun algebraic problem, as opposed to writing a manifesto.
-Try to run the simulation in the call_generate-bqn-link() and explore it! If you are
-interested, the source code of this project is hosted in a GitHub [[https://github.com/Panadestein/bqun][repository]].
-
-One last thing, if you care about performance, knock yourself out:
+Why BQN, you may ask? Well, its tacit and functional style together with the support for
+many combinators makes programming feel like solving a fun algebraic problem,
+as opposed to writing a manifesto. Try to run the simulation in
+the call_generate-bqn-link() and explore it! The interpreter is not particularly optimized,
+but here it is a comparison with Common Lisp in case you are curious:
 
 #+begin_export html
 <details>
@@ -104,6 +103,8 @@ Benchmark 1: cbqn -f ./perf/q.bqn
 #+begin_export html
 </details>
 #+end_export
+
+The full source code of this project is hosted in a GitHub [[https://github.com/Panadestein/bqun][repository]].
 
 #+name: generate-bqn-link
 #+begin_src emacs-lisp :noweb yes :noweb-prefix no :exports none :results raw :tangle no

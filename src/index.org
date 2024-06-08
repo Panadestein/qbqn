@@ -32,22 +32,14 @@ and [[https://arxiv.org/abs/1608.03355][arXiv:1608.03355]]. For simplicity, we a
     psi‿hs ← ({1⌾⊑𝕩⥊0}⋈⊢) 2⋆qb
     K ← {(∾⊣×·<⊢)⍟(𝕨-1)˜ 𝕩}
     L ← {(∾⊣×·<⊢)´ ⟨(hs-𝕨-≠𝕩) K g.id, 𝕩, 𝕨 K g.id ⟩}
-    #T ← {≍´(<∘<´/¨⊢) (↕∘≠⋈⊢) (⊢´∧)¨ 1↓↑𝕩}
+    T ← ∾↕∘≠{a←𝕩 ⋄ i←𝕨{𝕩⊑a}•_while_{𝕩<𝕨}𝕨⊑a ⋄ 𝕨<◶⟨⟩‿{(⊢∾(1↓⌽))𝕨+↕𝕩-𝕨}i}¨<
     #  psi ()˜´ ⌽sc
     »⊸<∨` 0(-`˜⟜U˜<⊣) psi
   }
-  T ← {𝕊a: (⊢∾⊏a)⍟{𝕩<𝕩⊏a}¨ ↕∘≠a}
-  T [3, 4, 0, 2, 1]
 #+end_src
 
 #+RESULTS: interpreter
-: ┌─                                       
-: · ┌·        ┌·        ┌·    ┌·    ┌·     
-:   · ┌·      · ┌·      · 2   · 3   · 4    
-:     · 3       · 3         ┘     ┘     ┘  
-:         ┘         ┘                      
-:           ┘         ┘                    
-:                                         ┘
+: (function block)
 
 
 ** Shor's algorithm
@@ -77,7 +69,7 @@ Wir müssen wissen, wir werden wissen!
 
 #+name: run
 #+begin_src bqn :exports both :tangle ./perf/q.bqn
-  #C +˝Q⍟(r⥊1) qb‿sc
+  C +˝Q⍟(r⥊1) qb‿sc
 #+end_src
 
 Compare the result with that from a real [[./ibm_eagle/shor_factorize_fifteen.html][quantum computer]].

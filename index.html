@@ -197,16 +197,16 @@
 <div id="content" class="content">
 <h1 class="title">A quantum interpreter in BQN</h1>
 
-<div id="outline-container-org8e40ea2" class="outline-2">
-<h2 id="org8e40ea2">Preamble</h2>
-<div class="outline-text-2" id="text-org8e40ea2">
+<div id="outline-container-org2391f7c" class="outline-2">
+<h2 id="org2391f7c">Preamble</h2>
+<div class="outline-text-2" id="text-org2391f7c">
 <p>
 We start by importing some required system functions, and defining some utilities to
 work with complex numbers and a namespace with the required quantum gates:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bqn" id="org0d11ae6">Sin‿Cos‿GCD ← •math
+<pre class="src src-bqn" id="orgfc34855">Sin‿Cos‿GCD ← •math
 U ← •rand.Range
 _cp ← {(-´𝔽¨)⋈(+´𝔽¨)⟜⌽}
 
@@ -221,32 +221,32 @@ g ← {
 </div>
 
 
-<div id="outline-container-org9206618" class="outline-2">
-<h2 id="org9206618">Interpreter</h2>
-<div class="outline-text-2" id="text-org9206618">
+<div id="outline-container-orgecbc18a" class="outline-2">
+<h2 id="orgecbc18a">Interpreter</h2>
+<div class="outline-text-2" id="text-orgecbc18a">
 <p>
-The (230 chars) quantum interpreter is based on references <a href="https://arxiv.org/abs/1711.02086">arXiv:1711.02086</a>
+The (268 chars) quantum interpreter is based on references <a href="https://arxiv.org/abs/1711.02086">arXiv:1711.02086</a>
 and <a href="https://arxiv.org/abs/1608.03355">arXiv:1608.03355</a>. For simplicity, we always measure at the end of the execution:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bqn" id="orgf8eaff9">Q ← {𝕊qb‿sc:
+<pre class="src src-bqn" id="org7ac3f4c">Q ← {𝕊qb‿sc:
   psi‿hs ← ({1⌾⊑𝕩⥊0}⋈⊢) 2⋆qb
-  K ← {(∾⊣×·&lt;⊢)⍟(𝕨-1)˜ 𝕩}
-  L ← {(∾⊣×·&lt;⊢)´ ⟨(hs-𝕨-≠𝕩) K g.id, 𝕩, 𝕨 K g.id ⟩}
-  T ← ∾↕∘≠{a←𝕩 ⋄ i←𝕨{𝕩⊑a}•_while_{𝕩&lt;𝕨}𝕨⊑a ⋄ 𝕨&lt;◶⟨⟩‿{(⊢∾(1↓⌽))𝕨+↕𝕩-𝕨}i}¨&lt;
-  #  psi ()˜´ ⌽sc
-  »⊸&lt;∨` 0(-`˜⟜U˜&lt;⊣) psi
+  MV‿KM ← (+˝∘×⎉1‿∞)‿(∾⊣×·&lt;⊢)
+  K ← {KM⍟(𝕨-1)˜ 𝕩}
+  L ← {KM´ ⟨(hs-𝕨-≠𝕩) K g.id, 𝕩, 𝕨 K g.id ⟩}
+  T ← ∾↕∘≠{a←𝕩 ⋄ i←𝕨{𝕩⊑a}•_while_{𝕩&lt;𝕨}𝕨⊑a ⋄ 𝕨&lt;◶⟨⟩‿{(⊢∾1⊸↓∘⌽)𝕨+↕𝕩-𝕨}i}¨&lt;
+  A ← 1⊸=◶{L𝕨 MV _cp 𝕩}‿@∘≠ ⊏
+  »⊸&lt;∨` 0(-`˜⟜U˜&lt;⊣) psi A˜´ ⌽sc
 }
 </pre>
 </div>
 </div>
 </div>
 
-
-<div id="outline-container-org32d0326" class="outline-2">
-<h2 id="org32d0326">Shor's algorithm</h2>
-<div class="outline-text-2" id="text-org32d0326">
+<div id="outline-container-org2260f37" class="outline-2">
+<h2 id="org2260f37">Shor's algorithm</h2>
+<div class="outline-text-2" id="text-org2260f37">
 <p>
 As a test case, we employ the quantum circuit of Shor's algorithm
 for the number fifteen and base eleven, following references
@@ -257,7 +257,7 @@ Additionally, we define a classical post-processing function:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bqn" id="org61ae87d">n‿a‿qb‿r ← ⟨15, 11, 5, 2⋆10⟩
+<pre class="src src-bqn" id="org55670b2">n‿a‿qb‿r ← ⟨15, 11, 5, 2⋆10⟩
 
 sc ← ⟨
   ⟨0⟩‿g.h ⋄ ⟨1⟩‿g.h ⋄ ⟨2⟩‿g.h
@@ -275,7 +275,7 @@ Wir müssen wissen, wir werden wissen!
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bqn" id="org681a4e9">C +˝Q⍟(r⥊1) qb‿sc
+<pre class="src src-bqn" id="org2d42e2a">C +˝Q⍟(r⥊1) qb‿sc
 </pre>
 </div>
 
@@ -285,24 +285,21 @@ Compare the result with that from a real <a href="./ibm_eagle/shor_factorize_fif
 </div>
 </div>
 
-<div id="outline-container-org63df775" class="outline-2">
-<h2 id="org63df775">Epilogue</h2>
-<div class="outline-text-2" id="text-org63df775">
+<div id="outline-container-orgb80ab4d" class="outline-2">
+<h2 id="orgb80ab4d">Epilogue</h2>
+<div class="outline-text-2" id="text-orgb80ab4d">
 <p>
-Why BQN, you may ask? Well, the combination of tacit and functional style it offers makes
-programming feel like solving a fun algebraic problem, as opposed to writing a manifesto.
-Try to run the simulation in the <a href="https://mlochbaum.github.io/BQN/try.html#code=U2lu4oC/Q29z4oC/R0NEIOKGkCDigKJtYXRoClUg4oaQIOKAonJhbmQuUmFuZ2UKX2NwIOKGkCB7KC3CtPCdlL3CqCnii4goK8K08J2UvcKoKeKfnOKMvX0KCmcg4oaQIHsKICBpZOKAv3jih5DijL3igL/iiqJ78J2VjvCdlal9wqggPD3ijJzLnOKGlTIsIGjih5At4oy+KDHigL8x4oq44oqRKTLigL8y4qWKw7fiiJoyCiAgc3dhcOKAv2Nub3Tih5Din6gx4oC/MiwgMuKAvzPin6kge+KMveKMvijwnZWo4oq44oqPKfCdlal9wqggPD3ijJzLnOKGlTQKICBQ4oeQM+KAvzPiirjiipF7KFNpbuKMvvCdlL3ii4hDb3PijL7wnZS9KSDwnZWp4oy+8J2UvSA94oycy5zihpU0fQp9CgpRIOKGkCB78J2VinFi4oC/c2M6CiAgcHNp4oC/aHMg4oaQICh7MeKMvuKKkfCdlanipYowfeKLiOKKoikgMuKLhnFiCiAgSyDihpAgeyjiiL7iiqPDl8K3POKKoinijZ8o8J2VqC0xKcucIPCdlal9CiAgTCDihpAgeyjiiL7iiqPDl8K3POKKoinCtCDin6goaHMt8J2VqC3iiaDwnZWpKSBLIGcuaWQsIPCdlaksIPCdlaggSyBnLmlkIOKfqX0KICBUIOKGkCDiiL7ihpXiiJjiiaB7YeKGkPCdlakg4ouEIGnihpDwnZWoe/CdlaniipFhfeKAol93aGlsZV978J2VqTzwnZWoffCdlajiipFhIOKLhCDwnZWoPOKXtuKfqOKfqeKAv3so4oqi4oi+KDHihpPijL0pKfCdlagr4oaV8J2VqS3wnZWofWl9wqg8CiAgIyAgcHNpICgpy5zCtCDijL1zYwogIMK74oq4POKIqGAgMCgtYMuc4p+cVcucPOKKoykgcHNpCn0KCm7igL9h4oC/cWLigL9yIOKGkCDin6gxNSwgMTEsIDUsIDLii4YxMOKfqQoKc2Mg4oaQIOKfqAogIOKfqDDin6nigL9nLmgg4ouEIOKfqDHin6nigL9nLmgg4ouEIOKfqDLin6nigL9nLmgKICDin6gyLCAz4p+p4oC/Zy5jbm90IOKLhCDin6gyLCA04p+p4oC/Zy5jbm90IOKLhCDin6gx4p+p4oC/Zy5oCiAg4p+o4p+oMSwgMOKfqSwgZy5QIM+Aw7cy4p+pIOKLhCDin6gw4p+p4oC/Zy5oCiAg4p+o4p+oMSwgMuKfqSwgZy5QIM+Aw7c04p+pIOKLhCDin6jin6gwLCAy4p+pLCBnLlAgz4DDtzLin6kg4ouEIOKfqDLin6nigL9nLmgK4p+pCgpDIOKGkCB7biAo4oqj4omhw5fCtOKImEdDRCkgK+KAvy178J2VqfCdlY4xfcKoIGHii4Yo4omgw7cyw5fiipHiiJjijZIpIDDijL7iipEry53iiJjigL8oMuKLhnFiLTIp4qWK8J2VqX0KCkMgK8udUeKNnyhy4qWKMSkgcWLigL9zYw==">BQN repl</a> and explore it! If you are
-interested, the source code of this project is hosted in a GitHub <a href="https://github.com/Panadestein/bqun">repository</a>.
-</p>
-
-<p>
-One last thing, if you care about performance, knock yourself out:
+Why BQN, you may ask? Well, its tacit and functional style together with the support for
+many combinators makes programming feel like solving a fun algebraic problem,
+as opposed to writing a manifesto. Try to run the simulation in
+the <a href="https://mlochbaum.github.io/BQN/try.html#code=U2lu4oC/Q29z4oC/R0NEIOKGkCDigKJtYXRoClUg4oaQIOKAonJhbmQuUmFuZ2UKX2NwIOKGkCB7KC3CtPCdlL3CqCnii4goK8K08J2UvcKoKeKfnOKMvX0KCmcg4oaQIHsKICBpZOKAv3jih5DijL3igL/iiqJ78J2VjvCdlal9wqggPD3ijJzLnOKGlTIsIGjih5At4oy+KDHigL8x4oq44oqRKTLigL8y4qWKw7fiiJoyCiAgc3dhcOKAv2Nub3Tih5Din6gx4oC/MiwgMuKAvzPin6kge+KMveKMvijwnZWo4oq44oqPKfCdlal9wqggPD3ijJzLnOKGlTQKICBQ4oeQM+KAvzPiirjiipF7KFNpbuKMvvCdlL3ii4hDb3PijL7wnZS9KSDwnZWp4oy+8J2UvSA94oycy5zihpU0fQp9CgpRIOKGkCB78J2VinFi4oC/c2M6CiAgcHNp4oC/aHMg4oaQICh7MeKMvuKKkfCdlanipYowfeKLiOKKoikgMuKLhnFiCiAgTVbigL9LTSDihpAgKCvLneKImMOX4o6JMeKAv+KIninigL8o4oi+4oqjw5fCtzziiqIpCiAgSyDihpAge0tN4o2fKPCdlagtMSnLnCDwnZWpfQogIEwg4oaQIHtLTcK0IOKfqChocy3wnZWoLeKJoPCdlakpIEsgZy5pZCwg8J2VqSwg8J2VqCBLIGcuaWQg4p+pfQogIFQg4oaQIOKIvuKGleKImOKJoHth4oaQ8J2VqSDii4QgaeKGkPCdlah78J2VqeKKkWF94oCiX3doaWxlX3vwnZWpPPCdlah98J2VqOKKkWEg4ouEIPCdlag84pe24p+o4p+p4oC/eyjiiqLiiL4x4oq44oaT4oiY4oy9KfCdlagr4oaV8J2VqS3wnZWofWl9wqg8CiAgQSDihpAgMeKKuD3il7Z7TPCdlaggTVYgX2NwIPCdlal94oC/QOKImOKJoCDiio8KICDCu+KKuDziiKhgIDAoLWDLnOKfnFXLnDziiqMpIHBzaSBBy5zCtCDijL1zYwp9Cgpu4oC/YeKAv3Fi4oC/ciDihpAg4p+oMTUsIDExLCA1LCAy4ouGMTDin6kKCnNjIOKGkCDin6gKICDin6gw4p+p4oC/Zy5oIOKLhCDin6gx4p+p4oC/Zy5oIOKLhCDin6gy4p+p4oC/Zy5oCiAg4p+oMiwgM+KfqeKAv2cuY25vdCDii4Qg4p+oMiwgNOKfqeKAv2cuY25vdCDii4Qg4p+oMeKfqeKAv2cuaAogIOKfqOKfqDEsIDDin6ksIGcuUCDPgMO3MuKfqSDii4Qg4p+oMOKfqeKAv2cuaAogIOKfqOKfqDEsIDLin6ksIGcuUCDPgMO3NOKfqSDii4Qg4p+o4p+oMCwgMuKfqSwgZy5QIM+Aw7cy4p+pIOKLhCDin6gy4p+p4oC/Zy5oCuKfqQoKQyDihpAge24gKOKKo+KJocOXwrTiiJhHQ0QpICvigL8te/CdlanwnZWOMX3CqCBh4ouGKOKJoMO3MsOX4oqR4oiY4o2SKSAw4oy+4oqRK8ud4oiY4oC/KDLii4ZxYi0yKeKlivCdlal9CgpDICvLnVHijZ8ocuKlijEpIHFi4oC/c2M=">BQN repl</a> and explore it! The interpreter is not particularly optimized,
+but here it is a comparison with Common Lisp in case you are curious:
 </p>
 
 <details>
 <summary>CBQN vs SBCL</summary>
 
-<pre class="example" id="orgb6c1fb2">
+<pre class="example" id="org400cbbe">
 Benchmark 1: cbqn -f ./perf/q.bqn
   Time (mean ± σ):       2.5 ms ±   0.4 ms    [User: 1.5 ms, System: 1.3 ms]
   Range (min … max):     2.0 ms …   3.0 ms    5 runs
@@ -310,6 +307,10 @@ Benchmark 1: cbqn -f ./perf/q.bqn
 </pre>
 
 </details>
+
+<p>
+The full source code of this project is hosted in a GitHub <a href="https://github.com/Panadestein/bqun">repository</a>.
+</p>
 </div>
 </div>
 </div>

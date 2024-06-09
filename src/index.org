@@ -14,12 +14,39 @@ work with complex matrix products. Then we create a namespace with some quantum 
   _cp ← {(-´𝔽¨)⋈(+´𝔽¨)⟜⌽}
     
   g ← {
-    I ← (⊢⋈≢⥊⟜0⊢)¨
-    id‿x‿h ⇐ (⌽‿⊢{𝕎𝕩}¨<=⌜˜↕2) ∾○I <-⌾(1‿1⊸⊑)2‿2⥊÷√2
-    swap‿cnot ⇐ I ⟨1‿2, 2‿3⟩ {⌽⌾(𝕨⊸⊏)𝕩}¨ <=⌜˜↕4
+    IM ← (⊢⋈≢⥊⟜0⊢)¨
+    id‿x‿h ⇐ (⌽‿⊢{𝕎𝕩}¨<=⌜˜↕2) ∾○IM <-⌾(1‿1⊸⊑)2‿2⥊÷√2
+    swap‿cnot ⇐ IM ⟨1‿2, 2‿3⟩ {⌽⌾(𝕨⊸⊏)𝕩}¨ <=⌜˜↕4
     P ⇐ 3‿3⊸⊑{(Sin⌾𝔽⋈Cos⌾𝔽) 𝕩⌾𝔽 =⌜˜↕4}
   }
 #+end_src
+
+#+begin_src bqn
+  M‿K‿D ← (+˝∘×⎉1‿∞ _cp)‿(∾⊣×·<⊢ _cp)‿{1+⌊2⋆⁼⊑𝕩}
+  K˜ g.id
+#+end_src
+
+#+RESULTS:
+#+begin_example
+┌─                 
+╵ ┌─      ┌─       
+  ╵ 0 0   ╵ 0 1    
+    0 0     1 0    
+        ┘       ┘  
+  ┌─      ┌─       
+  ╵ 0 1   ╵ 0 0    
+    1 0     0 0    
+        ┘       ┘  
+  ┌─      ┌─       
+  ╵ 0 0   ╵ 0 0    
+    0 0     0 0    
+        ┘       ┘  
+  ┌─      ┌─       
+  ╵ 0 0   ╵ 0 0    
+    0 0     0 0    
+        ┘       ┘  
+                  ┘
+#+end_example
 
 ** Interpreter
 
@@ -29,17 +56,16 @@ and [[https://arxiv.org/abs/1608.03355][arXiv:1608.03355]]. For simplicity, we a
 #+name: interpreter
 #+begin_src bqn :exports code :tangle ./perf/q.bqn
   Q ← {𝕊qb‿sc:
-    psi‿hs ← ({1⌾⊑𝕩⥊0}⋈⊢) 2⋆qb
-    M‿KM ← (+˝∘×⎉1‿∞ _cp)‿(∾⊣×·<⊢ _cp)
-    K ← {KM⍟(𝕨-1)˜ 𝕩}
-    L ← {KM´ ⟨(hs-𝕨-≠𝕩) K g.id, 𝕩, 𝕨 K g.id ⟩}
+    psi ← {1⌾⊑𝕩⥊0} 2⋆qb
+    M‿K‿D ← (+˝∘×⎉1‿∞ _cp)‿(∾⊣×·<⊢ _cp)‿{1+⌊2⋆⁼⊑𝕩}
+    L ← {K´ ⟨(qb-𝕨-D≠𝕩) {K⍟(𝕨-1)˜ 𝕩} g.id, 𝕨 {K⍟(𝕨-1)˜ 𝕩} g.id, 𝕩⟩}
     T ← ∾↕∘≠{a←𝕩 ⋄ i←𝕨{𝕩⊑a}•_while_{𝕩<𝕨}𝕨⊑a ⋄ 𝕨<◶⟨⟩‿{(⊢∾1⊸↓∘⌽)𝕨+↕𝕩-𝕨}i}¨<
     A ← {v𝕊qs‿gs:
       1=◶{
-        T qs (⌽∘⊢∾¬∘∊/⊣)˜ ↕qb
-        v M˜ 0 L gs
+        ui ← 0 L gs
+        v M˜ {0=≠𝕩 ? ui; {ui 𝕨⊸M∘M 𝕩}´ (M˜∘⌽⋈M)´ {𝕩 L g.swap}¨ 𝕩} T qs (⌽∘⊢∾¬∘∊/⊣)˜ ↕qb
       }‿(v M˜ qs L gs) ≠⊏qs}
-    »⊸<∨` 0(-`˜⟜U˜<⊣) psi A˜´ ⌽sc
+    »⊸<∨` 0(-`˜⟜U˜<⊣) +○(×˜)˝ psi A˜´ ⌽sc
   }
 #+end_src
 
@@ -51,13 +77,13 @@ and [[https://arxiv.org/abs/1608.03355][arXiv:1608.03355]]. For simplicity, we a
 As a test case, we employ the quantum circuit of Shor's algorithm
 for the number fifteen and base eleven, following references
 [[https://arxiv.org/abs/1804.03719][arXiv:1804.03719]] and [[https://arxiv.org/abs/2306.09122][arXiv:2306.09122]]. The resulting compiled circuit
-uses five qubits, three of which serve as control qubits. To enhance
+uses five qubits, three of which serve as control. To enhance
 statistical accuracy, the experiment is repeated multiple times.
 Additionally, we define a classical post-processing function:
 
 #+name: test
-#+begin_src bqn :exports code :results none :tangle ./perf/q.bqn
-  n‿a‿qb‿r ← ⟨15, 11, 5, 2⋆10⟩
+#+begin_src bqn :exports code :tangle ./perf/q.bqn
+  n‿a‿qb‿r ← ⟨15, 11, 5, 5⟩
 
   sc ← ⟨
     ⟨0⟩‿g.h ⋄ ⟨1⟩‿g.h ⋄ ⟨2⟩‿g.h
@@ -69,6 +95,9 @@ Additionally, we define a classical post-processing function:
   C ← {n (⊣≡×´∘GCD) +‿-{𝕩𝕎1}¨ a⋆(≠÷2×⊑∘⍒) 0⌾⊑+˝∘‿(2⋆qb-2)⥊𝕩}
 #+end_src
 
+#+RESULTS: test
+: (function block)
+
 Wir müssen wissen, wir werden wissen!
 
 #+name: run
@@ -76,13 +105,27 @@ Wir müssen wissen, wir werden wissen!
   C +˝Q⍟(r⥊1) qb‿sc
 #+end_src
 
+#+RESULTS: run
+#+begin_example
+Error: Mapping: Expected equal shape prefix (⟨2⟩ ≡ ≢𝕨, 4‿2 ≡ ≢𝕩)
+at   L ← {K´ ⟨(qb-𝕨-D≠𝕩) {K⍟(𝕨-1)˜ 𝕩} g.id, 𝕨 {K⍟(𝕨-1)˜ 𝕩} g.id, 𝕩⟩}
+                          ^^^^^^^^
+at   L ← {K´ ⟨(qb-𝕨-D≠𝕩) {K⍟(𝕨-1)˜ 𝕩} g.id, 𝕨 {K⍟(𝕨-1)˜ 𝕩} g.id, 𝕩⟩}
+                         ^^^^^^^^^^^^
+at       ui ← 0 L gs
+                ^
+at     1=◶{
+          ^
+at   »⊸<∨` 0(-`˜⟜U˜<⊣) +○(×˜)˝ psi A˜´ ⌽sc
+#+end_example
+
 Compare the result with that from a real [[./ibm_eagle/shor_factorize_fifteen.html][quantum computer]].
 
 ** Epilogue
 
-Why BQN, you may ask? Its tacit and functional style coupled with support
-for numerous combinators, which makes programming feel like solving a fun algebraic problem
-rather than writing a lengthy manifesto. Try running the simulation in
+Why BQN, you may ask? Its tacit and functional style together with its support
+for numerous combinators, which makes programming feel like solving an algebraic problem
+rather than drafting a bureaucratic manifesto. Try running the simulation in
 the call_generate-bqn-link() and explore it! While the interpreter is not
 particularly optimized, here is a comparison with Common Lisp for those who are curious:
 

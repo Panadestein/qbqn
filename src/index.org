@@ -80,11 +80,11 @@ Compare the result with that from a real [[./ibm_eagle/shor_factorize_fifteen.ht
 
 ** Epilogue
 
-Why BQN, you may ask? Well, its tacit and functional style together with the support for
-many combinators makes programming feel like solving a fun algebraic problem,
-as opposed to writing a manifesto. Try to run the simulation in
-the call_generate-bqn-link() and explore it! The interpreter is not particularly optimized,
-but here it is a comparison with Common Lisp in case you are curious:
+Why BQN, you may ask? Its tacit and functional style coupled with support
+for numerous combinators, which makes programming feel like solving a fun algebraic problem
+rather than writing a lengthy manifesto. Try running the simulation in
+the call_generate-bqn-link() and explore it! While the interpreter is not
+particularly optimized, here is a comparison with Common Lisp for those who are curious:
 
 #+begin_export html
 <details>

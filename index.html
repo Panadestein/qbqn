@@ -197,9 +197,9 @@
 <div id="content" class="content">
 <h1 class="title">BQN's Quantum Noise</h1>
 
-<div id="outline-container-org7b561cf" class="outline-2">
-<h2 id="org7b561cf">Preamble</h2>
-<div class="outline-text-2" id="text-org7b561cf">
+<div id="outline-container-org15e6464" class="outline-2">
+<h2 id="org15e6464">Preamble</h2>
+<div class="outline-text-2" id="text-org15e6464">
 <p>
 We will implement and test a compact quantum interpreter in the BQN programming language.
 Initially, we import the necessary system functions and define a 1-modifier for handling
@@ -207,7 +207,7 @@ complex matrix products. Next, we define a namespace containing various quantum 
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bqn" id="org980a092">Sin‿Cos‿GCD ← •math
+<pre class="src src-bqn" id="org8273853">Sin‿Cos‿GCD ← •math
 U ← •rand.Range
 _cp ← {(-´𝔽¨)⋈(+´𝔽¨)⟜⌽}
 
@@ -222,16 +222,16 @@ g ← {
 </div>
 </div>
 
-<div id="outline-container-org0071407" class="outline-2">
-<h2 id="org0071407">Interpreter</h2>
-<div class="outline-text-2" id="text-org0071407">
+<div id="outline-container-org4b58d82" class="outline-2">
+<h2 id="org4b58d82">Interpreter</h2>
+<div class="outline-text-2" id="text-org4b58d82">
 <p>
 The (463 chars) quantum interpreter is based on references <a href="https://arxiv.org/abs/1711.02086">arXiv:1711.02086</a>
 and <a href="https://arxiv.org/abs/1608.03355">arXiv:1608.03355</a>. For simplicity, we always measure at the end of the execution:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bqn" id="org0b59ac9">Q ← {𝕊qb‿sc‿rnd:
+<pre class="src src-bqn" id="orgc1d932e">Q ← {𝕊qb‿sc‿rnd:
   psi ← {(1⌾⊑⋈⊢)𝕩⥊0} 2⋆qb
   M‿K‿D ← ⟨+˝∘×⎉1‿∞ _cp, {1≡𝕩 ? 𝕨; 1≡𝕨 ? 𝕩; 𝕨(∾⊣×·&lt;⊢)_cp𝕩}, {⌊2⋆⁼≠⊑𝕩}⟩
   L ← {E ← {0=𝕨 ? 1; K⍟(𝕨-1)˜ 𝕩} ⋄ K´ ⟨(qb-𝕨+D𝕩) E g.id, 𝕩, 𝕨 E g.id⟩}
@@ -248,9 +248,9 @@ and <a href="https://arxiv.org/abs/1608.03355">arXiv:1608.03355</a>. For simplic
 </div>
 </div>
 
-<div id="outline-container-org51402cd" class="outline-2">
-<h2 id="org51402cd">Shor's algorithm</h2>
-<div class="outline-text-2" id="text-org51402cd">
+<div id="outline-container-orgd2e00e2" class="outline-2">
+<h2 id="orgd2e00e2">Shor's algorithm</h2>
+<div class="outline-text-2" id="text-orgd2e00e2">
 <p>
 As a test case, we employ the quantum circuit of Shor's algorithm
 for the number fifteen and base eleven, following references
@@ -261,7 +261,7 @@ Additionally, we define a classical post-processing function:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bqn" id="org768e850">n‿a‿qb‿r ← ⟨15, 11, 5, 0 U˜ 2⋆3⟩
+<pre class="src src-bqn" id="org06300e7">n‿a‿qb‿r ← ⟨15, 11, 5, 0 U˜ 2⋆10⟩
 
 sc ← ⟨
   ⟨0⟩‿g.h ⋄ ⟨1⟩‿g.h ⋄ ⟨2⟩‿g.h
@@ -279,7 +279,7 @@ Wir müssen wissen, wir werden wissen!
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bqn" id="orgef181cc">C &gt;+˝{Q qb‿sc‿𝕩}¨ r
+<pre class="src src-bqn" id="org987edbc">C &gt;+˝{Q qb‿sc‿𝕩}¨ r
 </pre>
 </div>
 
@@ -294,32 +294,32 @@ Compare the result with that from a real <a href="./ibm_eagle/shor_factorize_fif
 </div>
 </div>
 
-<div id="outline-container-orga6e4ea4" class="outline-2">
-<h2 id="orga6e4ea4">Epilogue</h2>
-<div class="outline-text-2" id="text-orga6e4ea4">
+<div id="outline-container-org1483d6f" class="outline-2">
+<h2 id="org1483d6f">Epilogue</h2>
+<div class="outline-text-2" id="text-org1483d6f">
 <p>
 Why BQN, you may ask? Its tacit and functional style together with its support
 for numerous combinators, which makes programming feel like solving a fun algebraic problem
 rather than drafting a manifesto. Try running the simulation in
-the <a href="https://mlochbaum.github.io/BQN/try.html#code=U2lu4oC/Q29z4oC/R0NEIOKGkCDigKJtYXRoClUg4oaQIOKAonJhbmQuUmFuZ2UKX2NwIOKGkCB7KC3CtPCdlL3CqCnii4goK8K08J2UvcKoKeKfnOKMvX0KCmcg4oaQIHsKICBJTSDihpAgKOKKouKLiOKJouKliuKfnDDiiqIpwqgKICB44oC/aWTigL9oIOKHkCAo4oy94oC/4oqie/CdlY7wnZWpfcKoPD3ijJzLnOKGlTIpIOKIvuKXi0lNIDwt4oy+KDHigL8x4oq44oqRKTLigL8y4qWKw7fiiJoyCiAgc3dhcOKAv2Nub3Qg4oeQIElNIOKfqDHigL8yLCAy4oC/M+KfqSB74oy94oy+KPCdlajiirjiio8p8J2VqX3CqCA8PeKMnMuc4oaVNAogIFAg4oeQIDPigL8z4oq44oqRe3Nt4oC/Y20g4oaQIPCdlanijL7wnZS9wqgg4p+oPeKMnMuc4oaVNCwgIDTigL804qWKMOKfqSDii4Qg4p+oU2lu4oy+8J2UvSBzbSwgQ29z4oy+8J2UvSBjbeKfqX0KfQoKUSDihpAge/CdlYpxYuKAv3Nj4oC/cm5kOgogIHBzaSDihpAgeygx4oy+4oqR4ouI4oqiKfCdlanipYowfSAy4ouGcWIKICBN4oC/S+KAv0Qg4oaQIOKfqCvLneKImMOX4o6JMeKAv+KIniBfY3AsIHsx4omh8J2VqSA/IPCdlag7IDHiiaHwnZWoID8g8J2VqTsg8J2VqCjiiL7iiqPDl8K3POKKoilfY3DwnZWpfSwge+KMijLii4bigbziiaDiipHwnZWpfeKfqQogIEwg4oaQIHtFIOKGkCB7MD3wnZWoID8gMTsgS+KNnyjwnZWoLTEpy5wg8J2VqX0g4ouEIEvCtCDin6gocWIt8J2VqCtE8J2VqSkgRSBnLmlkLCDwnZWpLCDwnZWoIEUgZy5pZOKfqX0KICBUIOKGkCDiiL7ihpXiiJjiiaB7YeKGkPCdlakg4ouEIGnihpDwnZWoe/CdlaniipFhfeKAol93aGlsZV978J2VqTzwnZWoffCdlajiipFhIOKLhCDwnZWoPOKXtuKfqOKfqeKAv3so4oqi4oi+MeKKuOKGk+KImOKMvSnwnZWoK+KGlfCdlakt8J2VqH1pfcKoPAogIEEg4oaQIHtxc+KAv2dz8J2VinY6CiAgICAx4oq4PeKXtnvwnZWK8J2VqToKICAgICAgdWnigL9wdCDihpAg4p+oMCBMIGdzLCBUIHFzICjijL3iiJjiiqLiiL7CrOKImOKIii/iiqMpy5wg4oaVcWLin6kKICAgICAgdiBNy5wgezA94omg8J2VqSA/IHVpOyB78J2VqSBNICh1aSBNIPCdlagpfcK0IChNy5zCtOKLiE3CtCkge/CdlakgTCBnLnN3YXB9wqgg8J2VqX0gcHQKICAgIH3igL8odiBNy5wgZ3MgTMucIOKKkXFzKSDiiaBxc30KICDCu+KKuDziiKhgIDA+IHJuZCAtYCA+K+KXiyjDl8ucKcudIHBzaSBBwrQg4oy9c2MKfQoKbuKAv2HigL9xYuKAv3Ig4oaQIOKfqDE1LCAxMSwgNSwgMCBVy5wgMuKLhjPin6kKCnNjIOKGkCDin6gKICDin6gw4p+p4oC/Zy5oIOKLhCDin6gx4p+p4oC/Zy5oIOKLhCDin6gy4p+p4oC/Zy5oCiAg4p+oMiwgM+KfqeKAv2cuY25vdCDii4Qg4p+oMiwgNOKfqeKAv2cuY25vdCDii4Qg4p+oMeKfqeKAv2cuaAogIOKfqOKfqDEsIDDin6ksIGcuUCDPgMO3MuKfqSDii4Qg4p+oMOKfqeKAv2cuaAogIOKfqOKfqDEsIDLin6ksIGcuUCDPgMO3NOKfqSDii4Qg4p+o4p+oMCwgMuKfqSwgZy5QIM+Aw7cy4p+pIOKLhCDin6gy4p+p4oC/Zy5oCuKfqQoKQyDihpAge24gKOKKo+KJocOXwrTiiJhHQ0QpICvigL8te/CdlanwnZWOMX3CqCA8YeKLhijiiaDDtzLDl+KKkeKImOKNkikgMOKMvuKKkSvLneKImOKAvygy4ouGcWItMinipYrwnZWpfQoKQyA+K8ude1EgcWLigL9zY+KAv/Cdlal9wqggcg==">BQN repl</a> and explore it! While the interpreter is not
+the <a href="https://mlochbaum.github.io/BQN/try.html#code=U2lu4oC/Q29z4oC/R0NEIOKGkCDigKJtYXRoClUg4oaQIOKAonJhbmQuUmFuZ2UKX2NwIOKGkCB7KC3CtPCdlL3CqCnii4goK8K08J2UvcKoKeKfnOKMvX0KCmcg4oaQIHsKICBJTSDihpAgKOKKouKLiOKJouKliuKfnDDiiqIpwqgKICB44oC/aWTigL9oIOKHkCAo4oy94oC/4oqie/CdlY7wnZWpfcKoPD3ijJzLnOKGlTIpIOKIvuKXi0lNIDwt4oy+KDHigL8x4oq44oqRKTLigL8y4qWKw7fiiJoyCiAgc3dhcOKAv2Nub3Qg4oeQIElNIOKfqDHigL8yLCAy4oC/M+KfqSB74oy94oy+KPCdlajiirjiio8p8J2VqX3CqCA8PeKMnMuc4oaVNAogIFAg4oeQIDPigL8z4oq44oqRe3Nt4oC/Y20g4oaQIPCdlanijL7wnZS9wqgg4p+oPeKMnMuc4oaVNCwgIDTigL804qWKMOKfqSDii4Qg4p+oU2lu4oy+8J2UvSBzbSwgQ29z4oy+8J2UvSBjbeKfqX0KfQoKUSDihpAge/CdlYpxYuKAv3Nj4oC/cm5kOgogIHBzaSDihpAgeygx4oy+4oqR4ouI4oqiKfCdlanipYowfSAy4ouGcWIKICBN4oC/S+KAv0Qg4oaQIOKfqCvLneKImMOX4o6JMeKAv+KIniBfY3AsIHsx4omh8J2VqSA/IPCdlag7IDHiiaHwnZWoID8g8J2VqTsg8J2VqCjiiL7iiqPDl8K3POKKoilfY3DwnZWpfSwge+KMijLii4bigbziiaDiipHwnZWpfeKfqQogIEwg4oaQIHtFIOKGkCB7MD3wnZWoID8gMTsgS+KNnyjwnZWoLTEpy5wg8J2VqX0g4ouEIEvCtCDin6gocWIt8J2VqCtE8J2VqSkgRSBnLmlkLCDwnZWpLCDwnZWoIEUgZy5pZOKfqX0KICBUIOKGkCDiiL7ihpXiiJjiiaB7YeKGkPCdlakg4ouEIGnihpDwnZWoe/CdlaniipFhfeKAol93aGlsZV978J2VqTzwnZWoffCdlajiipFhIOKLhCDwnZWoPOKXtuKfqOKfqeKAv3so4oqi4oi+MeKKuOKGk+KImOKMvSnwnZWoK+KGlfCdlakt8J2VqH1pfcKoPAogIEEg4oaQIHtxc+KAv2dz8J2VinY6CiAgICAx4oq4PeKXtnvwnZWK8J2VqToKICAgICAgdWnigL9wdCDihpAg4p+oMCBMIGdzLCBUIHFzICjijL3iiJjiiqLiiL7CrOKImOKIii/iiqMpy5wg4oaVcWLin6kKICAgICAgdiBNy5wgezA94omg8J2VqSA/IHVpOyB78J2VqSBNICh1aSBNIPCdlagpfcK0IChNy5zCtOKLiE3CtCkge/CdlakgTCBnLnN3YXB9wqgg8J2VqX0gcHQKICAgIH3igL8odiBNy5wgZ3MgTMucIOKKkXFzKSDiiaBxc30KICDCu+KKuDziiKhgIDA+IHJuZCAtYCA+K+KXiyjDl8ucKcudIHBzaSBBwrQg4oy9c2MKfQoKbuKAv2HigL9xYuKAv3Ig4oaQIOKfqDE1LCAxMSwgNSwgMCBVy5wgMuKLhjEw4p+pCgpzYyDihpAg4p+oCiAg4p+oMOKfqeKAv2cuaCDii4Qg4p+oMeKfqeKAv2cuaCDii4Qg4p+oMuKfqeKAv2cuaAogIOKfqDIsIDPin6nigL9nLmNub3Qg4ouEIOKfqDIsIDTin6nigL9nLmNub3Qg4ouEIOKfqDHin6nigL9nLmgKICDin6jin6gxLCAw4p+pLCBnLlAgz4DDtzLin6kg4ouEIOKfqDDin6nigL9nLmgKICDin6jin6gxLCAy4p+pLCBnLlAgz4DDtzTin6kg4ouEIOKfqOKfqDAsIDLin6ksIGcuUCDPgMO3MuKfqSDii4Qg4p+oMuKfqeKAv2cuaArin6kKCkMg4oaQIHtuICjiiqPiiaHDl8K04oiYR0NEKSAr4oC/LXvwnZWp8J2VjjF9wqggPGHii4Yo4omgw7cyw5fiipHiiJjijZIpIDDijL7iipEry53iiJjigL8oMuKLhnFiLTIp4qWK8J2VqX0KCkMgPivLnXtRIHFi4oC/c2PigL/wnZWpfcKoIHI=">BQN repl</a> and explore it! While the interpreter is not
 particularly optimized, here is a comparison with Common Lisp for those who are curious:
 </p>
 
 <details>
 <summary>CBQN vs SBCL</summary>
 
-<pre class="example" id="org6c853c6">
+<pre class="example" id="org15250f2">
 Benchmark 1: cbqn -f ./perf/q.bqn
-  Time (mean ± σ):      65.3 ms ±  42.2 ms    [User: 63.7 ms, System: 1.4 ms]
-  Range (min … max):    43.8 ms … 140.6 ms    5 runs
+  Time (mean ± σ):      5.297 s ±  0.029 s    [User: 5.278 s, System: 0.002 s]
+  Range (min … max):    5.256 s …  5.330 s    5 runs
  
 Benchmark 2: sbcl --script ./perf/q.lisp
-  Time (mean ± σ):      9.231 s ±  0.096 s    [User: 9.289 s, System: 0.091 s]
-  Range (min … max):    9.076 s …  9.339 s    5 runs
+  Time (mean ± σ):      8.826 s ±  0.061 s    [User: 8.846 s, System: 0.088 s]
+  Range (min … max):    8.759 s …  8.925 s    5 runs
  
 Summary
   cbqn -f ./perf/q.bqn ran
-  141.25 ± 91.26 times faster than sbcl --script ./perf/q.lisp
+    1.67 ± 0.01 times faster than sbcl --script ./perf/q.lisp
 </pre>
 
 </details>

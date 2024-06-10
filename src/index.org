@@ -54,7 +54,7 @@ Additionally, we define a classical post-processing function:
 
 #+name: test
 #+begin_src bqn :exports code :results none :tangle ./perf/q.bqn
-  n‿a‿qb‿r ← ⟨15, 11, 5, 0 U˜ 2⋆3⟩
+  n‿a‿qb‿r ← ⟨15, 11, 5, 0 U˜ 2⋆10⟩
 
   sc ← ⟨
     ⟨0⟩‿g.h ⋄ ⟨1⟩‿g.h ⋄ ⟨2⟩‿g.h
@@ -98,16 +98,16 @@ particularly optimized, here is a comparison with Common Lisp for those who are 
 #+RESULTS:
 #+begin_example
 Benchmark 1: cbqn -f ./perf/q.bqn
-  Time (mean ± σ):      65.3 ms ±  42.2 ms    [User: 63.7 ms, System: 1.4 ms]
-  Range (min … max):    43.8 ms … 140.6 ms    5 runs
+  Time (mean ± σ):      5.297 s ±  0.029 s    [User: 5.278 s, System: 0.002 s]
+  Range (min … max):    5.256 s …  5.330 s    5 runs
  
 Benchmark 2: sbcl --script ./perf/q.lisp
-  Time (mean ± σ):      9.231 s ±  0.096 s    [User: 9.289 s, System: 0.091 s]
-  Range (min … max):    9.076 s …  9.339 s    5 runs
+  Time (mean ± σ):      8.826 s ±  0.061 s    [User: 8.846 s, System: 0.088 s]
+  Range (min … max):    8.759 s …  8.925 s    5 runs
  
 Summary
   cbqn -f ./perf/q.bqn ran
-  141.25 ± 91.26 times faster than sbcl --script ./perf/q.lisp
+    1.67 ± 0.01 times faster than sbcl --script ./perf/q.lisp
 #+end_example
 
 #+begin_export html

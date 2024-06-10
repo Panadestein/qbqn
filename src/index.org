@@ -29,7 +29,7 @@ and [[https://arxiv.org/abs/1608.03355][arXiv:1608.03355]]. For simplicity, we a
 
 #+name: interpreter
 #+begin_src bqn :exports code :results none :tangle ./perf/q.bqn
-  Q ← {𝕊qb‿sc:
+  Q ← {𝕊qb‿sc‿rnd:
     psi ← {(1⌾⊑⋈⊢)𝕩⥊0} 2⋆qb
     M‿K‿D ← ⟨+˝∘×⎉1‿∞ _cp, {1≡𝕩 ? 𝕨; 1≡𝕨 ? 𝕩; 𝕨(∾⊣×·<⊢)_cp𝕩}, {⌊2⋆⁼≠⊑𝕩}⟩
     L ← {E ← {0=𝕨 ? 1; K⍟(𝕨-1)˜ 𝕩} ⋄ K´ ⟨(qb-𝕨+D𝕩) E g.id, 𝕩, 𝕨 E g.id⟩}
@@ -39,7 +39,7 @@ and [[https://arxiv.org/abs/1608.03355][arXiv:1608.03355]]. For simplicity, we a
         ui‿pt ← ⟨0 L gs, T qs (⌽∘⊢∾¬∘∊/⊣)˜ ↕qb⟩
         v M˜ {0=≠𝕩 ? ui; {𝕩 M (ui M 𝕨)}´ (M˜´⋈M´) {𝕩 L g.swap}¨ 𝕩} pt
       }‿(v M˜ gs L˜ ⊑qs) ≠qs}
-    »⊸<∨` 0(-`˜⟜U˜<⊣) >+○(×˜)˝ psi A´ ⌽sc
+    »⊸<∨` 0> rnd -` >+○(×˜)˝ psi A´ ⌽sc
   }
 #+end_src
 
@@ -54,7 +54,7 @@ Additionally, we define a classical post-processing function:
 
 #+name: test
 #+begin_src bqn :exports code :results none :tangle ./perf/q.bqn
-  n‿a‿qb‿r ← ⟨15, 11, 5, 2⋆10⟩
+  n‿a‿qb‿r ← ⟨15, 11, 5, 0 U˜ 2⋆3⟩
 
   sc ← ⟨
     ⟨0⟩‿g.h ⋄ ⟨1⟩‿g.h ⋄ ⟨2⟩‿g.h
@@ -70,7 +70,7 @@ Wir müssen wissen, wir werden wissen!
 
 #+name: run
 #+begin_src bqn :exports both :tangle ./perf/q.bqn
-  C >+˝Q⍟(r⥊1) qb‿sc
+  C >+˝{Q qb‿sc‿𝕩}¨ r
 #+end_src
 
 #+RESULTS: run
@@ -92,27 +92,29 @@ particularly optimized, here is a comparison with Common Lisp for those who are 
 #+end_export
 
 #+begin_src bash :exports results :tangle no :results raw :wrap example
-  hyperfine --runs 1 'cbqn -f ./perf/q.bqn' 'sbcl --script ./perf/q.lisp'
+  hyperfine --runs 5 'cbqn -f ./perf/q.bqn' 'sbcl --script ./perf/q.lisp'
 #+end_src
 
 #+RESULTS:
 #+begin_example
 Benchmark 1: cbqn -f ./perf/q.bqn
-  Time (abs ≡):          8.6 ms               [User: 5.8 ms, System: 2.7 ms]
+  Time (mean ± σ):      65.3 ms ±  42.2 ms    [User: 63.7 ms, System: 1.4 ms]
+  Range (min … max):    43.8 ms … 140.6 ms    5 runs
  
 Benchmark 2: sbcl --script ./perf/q.lisp
-  Time (abs ≡):         8.727 s               [User: 8.760 s, System: 0.086 s]
+  Time (mean ± σ):      9.231 s ±  0.096 s    [User: 9.289 s, System: 0.091 s]
+  Range (min … max):    9.076 s …  9.339 s    5 runs
  
 Summary
   cbqn -f ./perf/q.bqn ran
- 1016.22 times faster than sbcl --script ./perf/q.lisp
+  141.25 ± 91.26 times faster than sbcl --script ./perf/q.lisp
 #+end_example
 
 #+begin_export html
 </details>
 #+end_export
 
-The title of the post is meaningless, but it is a recursive acronym that appears be on-topic.
+The title of the post is meaningless, but it is a recursive acronym that appears to be on-topic.
 The full source code is hosted in a GitHub [[https://github.com/Panadestein/bqun][repository]].
 
 #+name: generate-bqn-link

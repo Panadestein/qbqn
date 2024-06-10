@@ -17,12 +17,12 @@ Q ← {𝕊qb‿sc‿rnd:
   A ← {qs‿gs𝕊v:
     1⊸=◶{𝕊𝕩:
       ui‿pt ← ⟨0 L gs, T qs (⌽∘⊢∾¬∘∊/⊣)˜ ↕qb⟩
-      v M˜ {0=≠𝕩 ? ui; {𝕩 M (ui M 𝕨)}´ (M˜´⋈M´) {𝕩 L g.swap}¨ 𝕩} pt
+      v M˜ {0=≠𝕩 ? ui; {𝕩 M ui M 𝕨}´ (M˜´⋈M´) {𝕩 L g.swap}¨ 𝕩} pt
     }‿(v M˜ gs L˜ ⊑qs) ≠qs}
   »⊸<∨` 0> rnd -` >+○(×˜)˝ psi A´ ⌽sc
 }
 
-n‿a‿qb‿r ← ⟨15, 11, 5, 0 U˜ 2⋆10⟩
+n‿a‿qb‿r ← ⟨15, 11, 5, 0 U˜ 2⋆3⟩
 
 sc ← ⟨
   ⟨0⟩‿g.h ⋄ ⟨1⟩‿g.h ⋄ ⟨2⟩‿g.h

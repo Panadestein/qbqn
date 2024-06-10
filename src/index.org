@@ -18,7 +18,7 @@ complex matrix products. Next, we define a namespace containing various quantum 
     IM ← (⊢⋈≢⥊⟜0⊢)¨
     x‿id‿h ⇐ (⌽‿⊢{𝕎𝕩}¨<=⌜˜↕2) ∾○IM <-⌾(1‿1⊸⊑)2‿2⥊÷√2
     swap‿cnot ⇐ IM ⟨1‿2, 2‿3⟩ {⌽⌾(𝕨⊸⊏)𝕩}¨ <=⌜˜↕4
-    P ⇐ 3‿3⊸⊑{(Sin⌾𝔽⋈Cos⌾𝔽) 𝕩⌾𝔽 =⌜˜↕4}
+    P ⇐ 3‿3⊸⊑{sm‿cm ← 𝕩⌾𝔽¨ ⟨=⌜˜↕4,  4‿4⥊0⟩ ⋄ ⟨Sin⌾𝔽 sm, Cos⌾𝔽 cm⟩}
   }
 #+end_src
 
@@ -28,7 +28,7 @@ The (call_count-chars() chars) quantum interpreter is based on references [[http
 and [[https://arxiv.org/abs/1608.03355][arXiv:1608.03355]]. For simplicity, we always measure at the end of the execution:
 
 #+name: interpreter
-#+begin_src bqn :exports code :tangle ./perf/q.bqn
+#+begin_src bqn :exports code :results none :tangle ./perf/q.bqn
   Q ← {𝕊qb‿sc:
     psi ← {(1⌾⊑⋈⊢)𝕩⥊0} 2⋆qb
     M‿K‿D ← ⟨+˝∘×⎉1‿∞ _cp, {1≡𝕩 ? 𝕨; 1≡𝕨 ? 𝕩; 𝕨(∾⊣×·<⊢)_cp𝕩}, {⌊2⋆⁼≠⊑𝕩}⟩
@@ -37,7 +37,7 @@ and [[https://arxiv.org/abs/1608.03355][arXiv:1608.03355]]. For simplicity, we a
     A ← {qs‿gs𝕊v:
       1⊸=◶{𝕊𝕩:
         ui‿pt ← ⟨0 L gs, T qs (⌽∘⊢∾¬∘∊/⊣)˜ ↕qb⟩
-        v M˜ {0=≠𝕩 ? ui; {ui 𝕨⊸M∘M 𝕩}´ (M˜´∘⌽⋈(M´)) {𝕩 L g.swap}¨ 𝕩} pt
+        v M˜ {0=≠𝕩 ? ui; {𝕩 M (ui M 𝕨)}´ (M˜´⋈M´) {𝕩 L g.swap}¨ 𝕩} pt
       }‿(v M˜ gs L˜ ⊑qs) ≠qs}
     »⊸<∨` 0(-`˜⟜U˜<⊣) >+○(×˜)˝ psi A´ ⌽sc
   }
@@ -53,8 +53,8 @@ statistical accuracy, the experiment is repeated multiple times.
 Additionally, we define a classical post-processing function:
 
 #+name: test
-#+begin_src bqn :exports code :tangle ./perf/q.bqn
-  n‿a‿qb‿r ← ⟨15, 11, 5, 5⟩
+#+begin_src bqn :exports code :results none :tangle ./perf/q.bqn
+  n‿a‿qb‿r ← ⟨15, 11, 5, 2⋆10⟩
 
   sc ← ⟨
     ⟨0⟩‿g.h ⋄ ⟨1⟩‿g.h ⋄ ⟨2⟩‿g.h
@@ -63,18 +63,18 @@ Additionally, we define a classical post-processing function:
     ⟨⟨1, 2⟩, g.P π÷4⟩ ⋄ ⟨⟨0, 2⟩, g.P π÷2⟩ ⋄ ⟨2⟩‿g.h
   ⟩
 
-  C ← {n (⊣≡×´∘GCD) +‿-{𝕩𝕎1}¨ a⋆(≠÷2×⊑∘⍒) 0⌾⊑+˝∘‿(2⋆qb-2)⥊𝕩}
+  C ← {n (⊣≡×´∘GCD) +‿-{𝕩𝕎1}¨ <a⋆(≠÷2×⊑∘⍒) 0⌾⊑+˝∘‿(2⋆qb-2)⥊𝕩}
 #+end_src
-
-#+RESULTS: test
-: (function block)
 
 Wir müssen wissen, wir werden wissen!
 
 #+name: run
 #+begin_src bqn :exports both :tangle ./perf/q.bqn
-  C +˝Q⍟(r⥊1) qb‿sc
+  C >+˝Q⍟(r⥊1) qb‿sc
 #+end_src
+
+#+RESULTS: run
+: 1
 
 Compare the result with that from a real [[./ibm_eagle/shor_factorize_fifteen.html][quantum computer]].
 
@@ -92,16 +92,20 @@ particularly optimized, here is a comparison with Common Lisp for those who are 
 #+end_export
 
 #+begin_src bash :exports results :tangle no :results raw :wrap example
-  #hyperfine --runs 5 'cbqn -f ./perf/q.bqn' 'sbcl --script ./perf/q.lisp'
-  hyperfine --runs 5 'cbqn -f ./perf/q.bqn'
+  hyperfine --runs 1 'cbqn -f ./perf/q.bqn' 'sbcl --script ./perf/q.lisp'
 #+end_src
 
 #+RESULTS:
 #+begin_example
 Benchmark 1: cbqn -f ./perf/q.bqn
-  Time (mean ± σ):       2.5 ms ±   0.4 ms    [User: 1.5 ms, System: 1.3 ms]
-  Range (min … max):     2.0 ms …   3.0 ms    5 runs
+  Time (abs ≡):          8.6 ms               [User: 5.8 ms, System: 2.7 ms]
  
+Benchmark 2: sbcl --script ./perf/q.lisp
+  Time (abs ≡):         8.727 s               [User: 8.760 s, System: 0.086 s]
+ 
+Summary
+  cbqn -f ./perf/q.bqn ran
+ 1016.22 times faster than sbcl --script ./perf/q.lisp
 #+end_example
 
 #+begin_export html

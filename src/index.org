@@ -1,5 +1,5 @@
 # -*- eval: (face-remap-add-relative 'default '(:family "BQN386 Unicode" :height 180)); -*-
-#+TITLE: BQN's Quantum Noises
+#+TITLE: BQN's Quantum Noise
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="assets/style.css"/>
 
 ** Preamble
@@ -81,8 +81,8 @@ Compare the result with that from a real [[./ibm_eagle/shor_factorize_fifteen.ht
 ** Epilogue
 
 Why BQN, you may ask? Its tacit and functional style together with its support
-for numerous combinators, which makes programming feel like solving an algebraic problem
-rather than drafting a political manifesto. Try running the simulation in
+for numerous combinators, which makes programming feel like solving a fun algebraic problem
+rather than drafting a manifesto. Try running the simulation in
 the call_generate-bqn-link() and explore it! While the interpreter is not
 particularly optimized, here is a comparison with Common Lisp for those who are curious:
 
@@ -114,7 +114,7 @@ Summary
 </details>
 #+end_export
 
-The title of the post is meaningless, but it is a recursive acronym that appears to be on-topic.
+The title of this post doesn't have a particular meaning, it's only a recursive acronym that appears to be on-topic.
 The full source code is hosted in a GitHub [[https://github.com/Panadestein/bqun][repository]].
 
 #+name: generate-bqn-link

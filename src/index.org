@@ -115,7 +115,7 @@ Summary
 #+end_export
 
 The title of this post doesn't have a particular meaning, it's only a recursive acronym that appears to be on-topic.
-The full source code is hosted in a GitHub [[https://github.com/Panadestein/bqun][repository]].
+The full source code is hosted in a GitHub [[https://github.com/Panadestein/qbqn][repository]].
 
 #+name: generate-bqn-link
 #+begin_src emacs-lisp :noweb yes :noweb-prefix no :exports none :results raw :tangle no

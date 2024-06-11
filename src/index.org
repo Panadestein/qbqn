@@ -114,8 +114,9 @@ Summary
 </details>
 #+end_export
 
-The title of this post doesn't have a particular meaning, it's only a recursive acronym that appears to be on-topic.
-The full source code is hosted in a GitHub [[https://github.com/Panadestein/qbqn][repository]].
+The title of this write-up doesn't have any specific meaning; it is merely a recursive acronym that appears relevant.
+The complete source code is available in a GitHub  [[https://github.com/Panadestein/qbqn][repository]]. Additionally, I recommend reading Stylewarning's [[https://www.stylewarning.com/posts/quantum-interpreter/][blog post]],
+which served as an inspiration for this one and graciously acknowledges it as a re-implementation.
 
 #+name: generate-bqn-link
 #+begin_src emacs-lisp :noweb yes :noweb-prefix no :exports none :results raw :tangle no

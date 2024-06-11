@@ -38,7 +38,7 @@ and [[https://arxiv.org/abs/1608.03355][arXiv:1608.03355]]. For simplicity, we a
     A ← {qs‿gs𝕊v:
       1⊸=◶{𝕊𝕩:
         ui‿pt ← ⟨0 L gs, T qs (⌽∘⊢∾¬∘∊/⊣)˜ ↕qb⟩
-        v M˜ {0=≠𝕩 ? ui; {𝕩 M ui M 𝕨}´ (M˜´⋈M´) {𝕩 L g.swap}¨ 𝕩} pt
+        v M˜ {0=≠𝕩 ? ui; {𝕩 M ui M 𝕨}´ (M˜´⋈M´) {𝕩 L g.swap}¨𝕩} pt
       }‿(v M˜ gs L˜ ⊑qs) ≠qs}
     »⊸<∨` 0> rnd -` >+○(×˜)˝ psi A´ ⌽sc
   }
@@ -92,11 +92,11 @@ the call_generate-bqn-link() and explore it! BQN has 64 primitives, the programs
 #+end_export
 
 #+begin_src bqn :noweb yes :noweb-prefix no :exports none :tangle no :results none
-  program ← "<<preamble>><<interpreter>><<test>><<run>>" # Org-mode's noweb
+  prog ← "<<preamble>><<interpreter>><<test>><<run>>" # Org-mode's noweb
 #+end_src
 
 #+begin_src bqn :noweb yes :noweb-prefix no :exports both :tangle no :wrap example
-  program +´∘(⍷⊸∊) ⊑¨ •primitives
+  prog +´∘(⍷⊸∊) ⊑¨ •primitives # prog is a org-mode noweb string
 #+end_src
 
 #+RESULTS:

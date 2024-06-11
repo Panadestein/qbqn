@@ -1,7 +1,6 @@
 # -*- eval: (face-remap-add-relative 'default '(:family "BQN386 Unicode" :height 180)); -*-
 #+TITLE: BQN's Quantum Noise
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="assets/style.css"/>
-#+HTML_HEAD: <script src="assets/bqn.js" defer></script>
 
 ** Preamble
 
@@ -84,7 +83,7 @@ Compare the result with that from a real [[./ibm_eagle/shor_factorize_fifteen.ht
 Why BQN, you may ask? Its tacit and functional style together with its support
 for numerous combinators, which makes programming feel like solving a fun algebraic problem
 rather than drafting a manifesto. Try running the simulation in
-the call_generate-bqn-link() and explore it! BQN has 64 primitives, the programs above uses this:
+the call_generate-bqn-link() and explore it! BQN has 64 primitives, the programs above uses:
 
 #+begin_export html
 <details>
@@ -96,7 +95,7 @@ the call_generate-bqn-link() and explore it! BQN has 64 primitives, the programs
 #+end_src
 
 #+begin_src bqn :noweb yes :noweb-prefix no :exports both :tangle no :wrap example
-  prog +´∘(⍷⊸∊) ⊑¨ •primitives # prog is a org-mode noweb string
+  prog +´∘(⍷⊸∊) ⊑¨ •primitives # prog is an org-mode noweb string
 #+end_src
 
 #+RESULTS:

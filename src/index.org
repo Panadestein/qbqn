@@ -91,7 +91,7 @@ the call_generate-bqn-link() and explore it! BQN has 64 primitives, the programs
 #+end_export
 
 #+begin_src bqn :noweb yes :noweb-prefix no :exports both :tangle no :wrap example
-  program ← "<<preamble>><<interpreter>><<test>><<run>>"
+  program ← "<<preamble>><<interpreter>><<test>><<run>>" # Org-mode's noweb
   program +´∘(⍷⊸∊) ⊑¨ •primitives
 #+end_src
 

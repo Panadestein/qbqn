@@ -98,16 +98,16 @@ particularly optimized, here is a comparison with Common Lisp for those who are 
 #+RESULTS:
 #+begin_example
 Benchmark 1: cbqn -f ./perf/q.bqn
-  Time (mean ± σ):      5.297 s ±  0.029 s    [User: 5.278 s, System: 0.002 s]
-  Range (min … max):    5.256 s …  5.330 s    5 runs
+  Time (mean ± σ):      48.4 ms ±   2.9 ms    [User: 46.2 ms, System: 2.0 ms]
+  Range (min … max):    45.4 ms …  52.6 ms    5 runs
  
 Benchmark 2: sbcl --script ./perf/q.lisp
-  Time (mean ± σ):      8.826 s ±  0.061 s    [User: 8.846 s, System: 0.088 s]
-  Range (min … max):    8.759 s …  8.925 s    5 runs
+  Time (mean ± σ):     36.913 s ±  0.913 s    [User: 37.274 s, System: 0.219 s]
+  Range (min … max):   36.022 s … 37.961 s    5 runs
  
 Summary
   cbqn -f ./perf/q.bqn ran
-    1.67 ± 0.01 times faster than sbcl --script ./perf/q.lisp
+  762.00 ± 50.05 times faster than sbcl --script ./perf/q.lisp
 #+end_example
 
 #+begin_export html

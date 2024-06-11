@@ -83,8 +83,28 @@ Compare the result with that from a real [[./ibm_eagle/shor_factorize_fifteen.ht
 Why BQN, you may ask? Its tacit and functional style together with its support
 for numerous combinators, which makes programming feel like solving a fun algebraic problem
 rather than drafting a manifesto. Try running the simulation in
-the call_generate-bqn-link() and explore it! While the interpreter is not
-particularly optimized, here is a comparison with Common Lisp for those who are curious:
+the call_generate-bqn-link() and explore it! BQN has 64 primitives, the programs above uses this:
+
+#+begin_export html
+<details>
+<summary>Number of primitives</summary>
+#+end_export
+
+#+begin_src bqn :noweb yes :noweb-prefix no :exports both :tangle no :wrap example
+  program ← "<<preamble>><<interpreter>><<test>><<run>>"
+  program +´∘(⍷⊸∊) ⊑¨ •primitives
+#+end_src
+
+#+RESULTS:
+#+begin_example
+44
+#+end_example
+
+#+begin_export html
+</details>
+#+end_export
+
+While the interpreter is not particularly optimized, here is a comparison with Common Lisp for those who are curious:
 
 #+begin_export html
 <details>

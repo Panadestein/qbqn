@@ -1,6 +1,7 @@
 # -*- eval: (face-remap-add-relative 'default '(:family "BQN386 Unicode" :height 180)); -*-
 #+TITLE: BQN's Quantum Noise
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="assets/style.css"/>
+#+HTML_HEAD: <script src="assets/bqn.js" defer></script>
 
 ** Preamble
 
@@ -90,8 +91,11 @@ the call_generate-bqn-link() and explore it! BQN has 64 primitives, the programs
 <summary>Number of primitives</summary>
 #+end_export
 
-#+begin_src bqn :noweb yes :noweb-prefix no :exports both :tangle no :wrap example
+#+begin_src bqn :noweb yes :noweb-prefix no :exports none :tangle no :results none
   program ← "<<preamble>><<interpreter>><<test>><<run>>" # Org-mode's noweb
+#+end_src
+
+#+begin_src bqn :noweb yes :noweb-prefix no :exports both :tangle no :wrap example
   program +´∘(⍷⊸∊) ⊑¨ •primitives
 #+end_src
 

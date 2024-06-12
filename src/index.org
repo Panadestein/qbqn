@@ -4,7 +4,7 @@
 
 ** Preamble
 
-We will implement and test a compact quantum interpreter in the BQN programming language.
+We will implement and test a compact quantum interpreter in the BQN[fn:1] programming language.
 Initially, we import the necessary system functions and define a 1-modifier for handling
 complex matrix products. Next, we define a namespace containing various quantum gates:
 
@@ -80,34 +80,35 @@ Compare the result with that from a real [[./ibm_eagle/shor_factorize_fifteen.ht
 
 ** Epilogue
 
-Why BQN, you may ask? Its tacit and functional style together with its support
-for numerous combinators, which makes programming feel like solving a fun algebraic problem
-rather than drafting a manifesto. Try running the simulation in
-the call_generate-bqn-link() and explore it! BQN has 64 primitives, the programs above uses:
+Why the hieroglyphs, you may ask? Tacit plus functional style together with numerous combinators
+makes programming feel like solving a fun algebraic problem rather than drafting a manifesto.
+BQN is the epitome of minimalism's power:
 
 #+begin_export html
 <details>
-<summary>Number of primitives</summary>
+<summary>Used primitives</summary>
 #+end_export
+
+We define the src_bqn[:exports code]{prog} string with the full program's content.
 
 #+begin_src bqn :noweb yes :noweb-prefix no :exports none :tangle no :results none
   prog ← "<<preamble>><<interpreter>><<test>><<run>>" # Org-mode's noweb
 #+end_src
 
 #+begin_src bqn :noweb yes :noweb-prefix no :exports both :tangle no :wrap example
-  prog +´∘(⍷⊸∊) ⊑¨ •primitives # prog is an org-mode noweb string
+  prog (≠∘⊢∾˜·+´⍷⊸∊) ⊑¨ •primitives
 #+end_src
 
 #+RESULTS:
 #+begin_example
-44
+⟨ 44 64 ⟩
 #+end_example
 
 #+begin_export html
 </details>
 #+end_export
 
-While the interpreter is not particularly optimized, here is a comparison with Common Lisp for those who are curious:
+BQN is also fast. While the interpreter is not particularly optimized, here is a comparison with the equivalent Common Lisp program:
 
 #+begin_export html
 <details>
@@ -137,8 +138,8 @@ Summary
 </details>
 #+end_export
 
-The title of this write-up doesn't have any specific meaning; it is merely a recursive acronym that uses quantum computing jargon.
-The complete source code is available in a GitHub  [[https://github.com/Panadestein/qbqn][repository]]. Additionally, I recommend reading Stylewarning's [[https://www.stylewarning.com/posts/quantum-interpreter/][blog post]],
+Try running the simulation in the call_generate-bqn-link() and explore it! The complete source code is hosted in a GitHub [[https://github.com/Panadestein/qbqn][repository]].
+Additionally, I recommend reading Stylewarning's [[https://www.stylewarning.com/posts/quantum-interpreter/][blog post]],
 which served as an inspiration for this one and kindly lists it as a re-implementation.
 
 #+name: generate-bqn-link
@@ -152,3 +153,5 @@ which served as an inspiration for this one and kindly lists it as a re-implemen
 #+begin_src emacs-lisp :noweb yes :noweb-prefix no :exports none :results raw :tangle no
   (- (length "<<interpreter>>") 4)
 #+end_src
+
+[fn:1] This post's title is a playful recursive acronym inspired by quantum computing terminology, without any specific significance beyond that.

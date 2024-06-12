@@ -86,10 +86,10 @@ BQN is the epitome of minimalism's power:
 
 #+begin_export html
 <details>
-<summary>Used primitives</summary>
+<summary>Primitive's stats</summary>
 #+end_export
 
-We define the src_bqn[:exports code]{prog} string with the full program's content.
+We define the src_bqn[:exports code]{prog} string with the full program's content. We used:
 
 #+begin_src bqn :noweb yes :noweb-prefix no :exports none :tangle no :results none
   prog ← "<<preamble>><<interpreter>><<test>><<run>>" # Org-mode's noweb
@@ -102,6 +102,20 @@ We define the src_bqn[:exports code]{prog} string with the full program's conten
 #+RESULTS:
 #+begin_example
 ⟨ 44 64 ⟩
+#+end_example
+
+With this distribution:
+
+#+begin_src bqn :noweb yes :noweb-prefix no :exports both :tangle no :wrap example
+  ⍉>(⍷∾≠)¨∘(⊐⊸⊔∊/⊣)⟜(⊑¨•primitives)˜ prog
+#+end_src
+
+#+RESULTS:
+#+begin_example
+┌─                                                                                                                                                                                 
+╵ '-' '´' '¨' '⋈' '+' '⟜' '⌽' '⊢' '≢' '⥊' '<' '=' '⌜' '˜' '↕' '∾' '○' '⌾' '⊸' '⊑' '÷' '√' '⊏' '⋆' '˝' '∘' '×' '⎉' '≡' '⊣' '⌊' '⁼' '≠' '⍟' '◶' '↓' '¬' '∊' '/' '»' '∨' '`' '>' '⍒'  
+  8   8   10  4   8   2   6   7   1   5   9   6   3   11  6   5   2   7   6   9   5   1   1   5   4   8   5   1   3   3   1   1   5   1   2   1   1   1   1   1   1   2   3   1    
+                                                                                                                                                                                  ┘
 #+end_example
 
 #+begin_export html

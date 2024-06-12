@@ -96,7 +96,7 @@ We define the src_bqn[:exports code]{prog} string with the full program's conten
 #+end_src
 
 #+begin_src bqn :noweb yes :noweb-prefix no :exports both :tangle no :wrap example
-  prog (≠∘⊢∾˜·+´⍷⊸∊) ⊑¨ •primitives
+  prog (+´⊸≍⟜≠∊)˜ ⊑¨•primitives
 #+end_src
 
 #+RESULTS:

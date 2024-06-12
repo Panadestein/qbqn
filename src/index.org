@@ -122,16 +122,16 @@ BQN is also fast. While the interpreter is not particularly optimized, here is a
 #+RESULTS:
 #+begin_example
 Benchmark 1: cbqn -f ./perf/q.bqn
-  Time (mean ± σ):      48.4 ms ±   2.9 ms    [User: 46.2 ms, System: 2.0 ms]
-  Range (min … max):    45.4 ms …  52.6 ms    5 runs
+  Time (mean ± σ):      5.468 s ±  0.077 s    [User: 5.427 s, System: 0.005 s]
+  Range (min … max):    5.358 s …  5.535 s    5 runs
  
 Benchmark 2: sbcl --script ./perf/q.lisp
-  Time (mean ± σ):     36.913 s ±  0.913 s    [User: 37.274 s, System: 0.219 s]
-  Range (min … max):   36.022 s … 37.961 s    5 runs
+  Time (mean ± σ):     37.114 s ±  0.893 s    [User: 37.544 s, System: 0.207 s]
+  Range (min … max):   36.457 s … 38.634 s    5 runs
  
 Summary
   cbqn -f ./perf/q.bqn ran
-  762.00 ± 50.05 times faster than sbcl --script ./perf/q.lisp
+    6.79 ± 0.19 times faster than sbcl --script ./perf/q.lisp
 #+end_example
 
 #+begin_export html

@@ -31,13 +31,14 @@ and [[https://arxiv.org/abs/1608.03355][arXiv:1608.03355]]. For simplicity, we a
 #+begin_src bqn :exports code :results none :tangle ./perf/q.bqn
   Q ← {𝕊qb‿sc‿rnd:
     psi ← {(1⌾⊑⋈⊢)𝕩⥊0} 2⋆qb
-    M‿K‿D ← ⟨+˝∘×⎉1‿∞ _cp, {1≡𝕩 ? 𝕨; 1≡𝕨 ? 𝕩; 𝕨(∾⊣×·<⊢)_cp𝕩}, {⌊2⋆⁼≠⊑𝕩}⟩
-    L ← {E ← {0=𝕨 ? 1; K⍟(𝕨-1)˜ 𝕩} ⋄ K´ ⟨(qb-𝕨+D𝕩) E g.id, 𝕩, 𝕨 E g.id⟩}
+    M‿K ← ⟨+˝∘×⎉1‿∞ _cp, {1≡𝕩 ? 𝕨; 1≡𝕨 ? 𝕩; 𝕨(∾⊣×·<⊢)_cp𝕩}⟩
+    D‿E ← {⌊2⋆⁼≠⊑𝕩}‿{0=𝕨 ? 1; K⍟(𝕨-1)˜ 𝕩}
+    L ← {K´ ⟨(qb-𝕨+D𝕩) E g.id, 𝕩, 𝕨 E g.id⟩}
     T ← ∾↕∘≠{a←𝕩 ⋄ i←𝕨{𝕩⊑a}•_while_{𝕩<𝕨}𝕨⊑a ⋄ 𝕨<◶⟨⟩‿{(⊢∾1⊸↓∘⌽)𝕨+↕𝕩-𝕨}i}¨<
     A ← {qs‿gs𝕊v:
       1⊸=◶{𝕊𝕩:
         ui‿pt ← ⟨0 L gs, T qs (⌽∘⊢∾¬∘∊/⊣)˜ ↕qb⟩
-        v M˜ {0=≠𝕩 ? ui; {𝕩 M ui M 𝕨}´ (M˜´⋈M´) {𝕩 L g.swap}¨𝕩} pt
+        v M˜ {0=≠𝕩 ? ui; {𝕩 M ui M 𝕨}´ (M˜´⋈M´) {𝕩 L g.swap}¨ 𝕩} pt
       }‿(v M˜ gs L˜ ⊑qs) ≠qs}
     »⊸<∨` 0> rnd -` >+○(×˜)˝ psi A´ ⌽sc
   }
@@ -54,7 +55,7 @@ Additionally, we define a classical post-processing function:
 
 #+name: test
 #+begin_src bqn :exports code :results none :tangle ./perf/q.bqn
-  n‿a‿qb‿r ← ⟨15, 11, 5, 0 U˜ 2⋆10⟩
+  n‿a‿qb‿r ← ⟨15, 11, 5, 0 U˜ 2⋆3⟩
 
   sc ← ⟨
     ⟨0⟩‿g.h ⋄ ⟨1⟩‿g.h ⋄ ⟨2⟩‿g.h
@@ -66,7 +67,7 @@ Additionally, we define a classical post-processing function:
   C ← {n (⊣≡×´∘GCD) +‿-{𝕩𝕎1}¨ <a⋆(≠÷2×⊑∘⍒) 0⌾⊑+˝∘‿(2⋆qb-2)⥊𝕩}
 #+end_src
 
-Wir müssen wissen, wir werden wissen!
+Wir müssen wissen, wir werden wissen![fn:2]
 
 #+name: run
 #+begin_src bqn :exports both :tangle ./perf/q.bqn
@@ -89,7 +90,7 @@ BQN is the epitome of minimalism's power:
 <summary>Primitive's stats</summary>
 #+end_export
 
-We define the src_bqn[:exports code]{prog} string with the full program's content. We used:
+The src_bqn[:exports code]{prog} string contains the full source code. We used:
 
 #+begin_src bqn :noweb yes :noweb-prefix no :exports none :tangle no :results none
   prog ← "<<preamble>><<interpreter>><<test>><<run>>"
@@ -122,15 +123,15 @@ With this distribution:
 </details>
 #+end_export
 
-BQN is also fast. While the interpreter is not particularly optimized, here is a full program's profiling and a comparison
-with the equivalent Common Lisp code:
+BQN is also fast:
+
 
 #+begin_export html
 <details>
 <summary>Benchmarks</summary>
 #+end_export
 
-This is CBQN vs SBCL:
+While the interpreter is not particularly optimized, here is a comparison with the equivalent Common Lisp code:
 
 #+begin_src bash :exports results :tangle no :results raw :wrap example
   hyperfine --runs 5 'cbqn -f ./perf/q.bqn' 'sbcl --script ./perf/q.lisp'
@@ -151,7 +152,7 @@ Summary
     6.79 ± 0.19 times faster than sbcl --script ./perf/q.lisp
 #+end_example
 
-And a profiling:
+And here is a full program's profile. All time is spent in the Kronecker and matrix products:
 
 #+begin_src bqn :exports both :tangle no :results raw :wrap example
   )profile C >+˝{Q qb‿sc‿𝕩}¨ r
@@ -159,20 +160,21 @@ And a profiling:
 
 #+RESULTS:
 #+begin_example
-Got 27637 samples
-(REPL): 27637 samples:
-    13│Q ← {𝕊qb‿sc‿rnd:
-     2│  psi ← {(1⌾⊑⋈⊢)𝕩⥊0} 2⋆qb
-  2618│  M‿K‿D ← ⟨+˝∘×⎉1‿∞ _cp, {1≡𝕩 ? 𝕨; 1≡𝕨 ? 𝕩; 𝕨(∾⊣×·<⊢)_cp𝕩}, {⌊2⋆⁼≠⊑𝕩}⟩
-    65│  L ← {E ← {0=𝕨 ? 1; K⍟(𝕨-1)˜ 𝕩} ⋄ K´ ⟨(qb-𝕨+D𝕩) E g.id, 𝕩, 𝕨 E g.id⟩}
-    24│  T ← ∾↕∘≠{a←𝕩 ⋄ i←𝕨{𝕩⊑a}•_while_{𝕩<𝕨}𝕨⊑a ⋄ 𝕨<◶⟨⟩‿{(⊢∾1⊸↓∘⌽)𝕨+↕𝕩-𝕨}i}¨<
-     4│  A ← {qs‿gs𝕊v:
-    10│    1⊸=◶{𝕊𝕩:
-    23│      ui‿pt ← ⟨0 L gs, T qs (⌽∘⊢∾¬∘∊/⊣)˜ ↕qb⟩
- 24504│      v M˜ {0=≠𝕩 ? ui; {𝕩 M ui M 𝕨}´ (M˜´⋈M´) {𝕩 L g.swap}¨𝕩} pt
-   371│    }‿(v M˜ gs L˜ ⊑qs) ≠qs}
-     3│  »⊸<∨` 0> rnd -` >+○(×˜)˝ psi A´ ⌽sc
-      │}
+Got 27984 samples
+(REPL): 27984 samples:
+     8│  Q ← {𝕊qb‿sc‿rnd:
+     1│    psi ← {(1⌾⊑⋈⊢)𝕩⥊0} 2⋆qb
+  2522│    M‿K ← ⟨+˝∘×⎉1‿∞ _cp, {1≡𝕩 ? 𝕨; 1≡𝕨 ? 𝕩; 𝕨(∾⊣×·<⊢)_cp𝕩}⟩
+    29│    D‿E ← {⌊2⋆⁼≠⊑𝕩}‿{0=𝕨 ? 1; K⍟(𝕨-1)˜ 𝕩}
+    28│    L ← {K´ ⟨(qb-𝕨+D𝕩) E g.id, 𝕩, 𝕨 E g.id⟩}
+    14│    T ← ∾↕∘≠{a←𝕩 ⋄ i←𝕨{𝕩⊑a}•_while_{𝕩<𝕨}𝕨⊑a ⋄ 𝕨<◶⟨⟩‿{(⊢∾1⊸↓∘⌽)𝕨+↕𝕩-𝕨}i}¨<
+     3│    A ← {qs‿gs𝕊v:
+     2│      1⊸=◶{𝕊𝕩:
+    16│        ui‿pt ← ⟨0 L gs, T qs (⌽∘⊢∾¬∘∊/⊣)˜ ↕qb⟩
+ 24976│        v M˜ {0=≠𝕩 ? ui; {𝕩 M ui M 𝕨}´ (M˜´⋈M´) {𝕩 L g.swap}¨ 𝕩} pt
+   373│      }‿(v M˜ gs L˜ ⊑qs) ≠qs}
+    12│    »⊸<∨` 0> rnd -` >+○(×˜)˝ psi A´ ⌽sc
+      │  }
 #+end_example
 
 #+begin_export html
@@ -196,3 +198,4 @@ which served as an inspiration for this one and kindly lists it as a re-implemen
 #+end_src
 
 [fn:1] This post's title is a playful recursive acronym inspired by quantum computing terminology, without any specific significance beyond that.
+[fn:2] Hilbert's [[https://maa.org/press/periodicals/convergence/david-hilberts-radio-address-english-translation][radio address]] in 1930.

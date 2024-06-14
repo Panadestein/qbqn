@@ -81,8 +81,8 @@ Compare the result with that from a real [[./ibm_eagle/shor_factorize_fifteen.ht
 
 ** Epilogue
 
-Why the hieroglyphs, you may ask? Tacit plus functional style together with numerous combinators
-makes programming feel like solving a fun algebraic problem rather than drafting a manifesto.
+Why the hieroglyphs, you may ask? The tacit and functional style, coupled with numerous combinators,
+makes programming feel like solving a fun algebraic puzzle rather than drafting a manifesto.
 BQN is the epitome of minimalism's power:
 
 #+begin_export html
